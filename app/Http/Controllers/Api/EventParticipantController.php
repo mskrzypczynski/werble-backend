@@ -15,7 +15,7 @@ class EventParticipantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() : EventParticipantResourceCollection
+    public function index()
     {
         return (new EventParticipantResourceCollection(EventParticipant::paginate()));
     }
@@ -47,7 +47,7 @@ class EventParticipantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(EventParticipant $eventParticipant) : EventParticipant
+    public function show(EventParticipant $eventParticipant)
     {
         return (new EventParticipantResource($eventParticipant));
     }
@@ -59,7 +59,7 @@ class EventParticipantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EventParticipant $eventParticipant) : EventParticipant
+    public function update(Request $request, EventParticipant $eventParticipant)
     {
         $request->validate(
             [

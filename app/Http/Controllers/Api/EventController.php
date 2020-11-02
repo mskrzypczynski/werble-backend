@@ -15,7 +15,7 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() : EventResourceCollection
+    public function index()
     {
 
         return (new EventResourceCollection(Event::paginate()))->response();

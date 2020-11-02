@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FriendshipStatusResource;
 use App\Models\FriendshipStatus;
 use Illuminate\Http\Request;
 

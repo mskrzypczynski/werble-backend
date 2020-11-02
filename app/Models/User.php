@@ -108,5 +108,9 @@ class User extends Authenticatable
 
     public function beingFriends(){
         return $this->hasMany('App\Models\UserFriend','user_id','user_id');
-}
+    }
+
+    public function AauthAcessToken(){
+        return $this->hasMany('\App\OauthAccessToken');
+    }
 }

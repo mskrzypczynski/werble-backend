@@ -17,7 +17,7 @@ class EventReviewController extends Controller
      *
      * @return EventReviewResourceCollection
      */
-    public function index(): EventReviewResourceCollection
+    public function index()
     {
         return new EventReviewResourceCollection(EventReview::paginate(10));
     }
