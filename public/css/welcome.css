@@ -1,0 +1,39 @@
+html, body{
+
+    background: #0e2231;
+    font-family: "Source Code Pro", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    color: white;
+    text-align: center;
+
+}
+
+h1 {
+    padding:100px 100px 10px 100px ;
+    font-size: 88px;
+    font-family: "Book Antiqua", serif;
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-decoration: none;
+}
+
+h1 a{
+    text-decoration: none;
+}
+
+.container h1 a:visited{
+    color: white;
+}
+
+
+.hello{
+    position: relative;
+}
+
+.image{
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    z-index: 0;
+    position: absolute;
+}
+

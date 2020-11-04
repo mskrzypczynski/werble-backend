@@ -1,0 +1,23 @@
+table {
+    color: white;
+    font-size: 1px;
+    text-align: left;
+}
+th,td{
+    font-size: 20px;
+}
+#mainDiv {
+
+    position: relative;
+    border-bottom: 2px solid #f51c40;
+    background: #3beadc;
+}
+
+#borderLeft {
+    border-left: 2px solid #f51c40;
+    position: absolute;
+    top: 50%;
+    bottom: 0;
+}
+
+
