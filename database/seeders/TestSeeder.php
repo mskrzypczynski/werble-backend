@@ -16,11 +16,12 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
-
-
         User::factory()->create(
-            [   'email' => 'test2@test.com',
-                'password' => bcrypt('password')
+            [
+                'email' => 'test2@test.com',
+                'password' => bcrypt('test2'),
+                'is_admin' => 1,
+                'is_active' => 1
             ]
         );
     }
