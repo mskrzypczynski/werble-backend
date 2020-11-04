@@ -21,7 +21,7 @@ class CreateEventReviewsTable extends Migration
             $table->boolean     ('is_active');
             $table->bigInteger  ('event_participant_id')->unsigned();
             $table->bigInteger  ('event_id')->unsigned();
-
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('event_participant_id')->references('event_participant_id')->on('event_participants');

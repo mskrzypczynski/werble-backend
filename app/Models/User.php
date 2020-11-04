@@ -16,7 +16,7 @@ class User extends Authenticatable
      *  Also while deleting we switch entity's is_active attribute to false.
      *  User must verify email
      */
-    use HasFactory, Notifiable, HasApiTokens, MustVerifyEmail, SoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
 
     /**
      * The table associated with User model

@@ -16,6 +16,7 @@ class CreateEventTypesTable extends Migration
         Schema::create('event_types', function (Blueprint $table) {
             $table->id      ('event_type_id')->unique()->autoIncrement();
             $table->string  ('event_type_name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

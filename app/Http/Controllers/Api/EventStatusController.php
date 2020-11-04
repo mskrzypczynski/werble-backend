@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventStatusResource;
+use App\Models\EventStatus;
 use Illuminate\Http\Request;
 
 class EventStatusController extends Controller

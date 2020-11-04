@@ -16,6 +16,7 @@ class CreateParticipantStatusesTable extends Migration
         Schema::create('participant_statuses', function (Blueprint $table) {
             $table->id      ('participant_status_id')->unique()->autoIncrement();
             $table->string  ('participant_status_name')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

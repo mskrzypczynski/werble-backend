@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,23 +15,24 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+/*
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+*/
 
+Route::group(['middleware'=> ['cors','json.response' ]], function () {
+    Route::post('login', [AuthController::class,'login'])->name('login.api');
+    Route::post('signup', [AuthController::class,'register'])->name('register.api');
 
-Route::group([
-    'prefix' => 'user'
-], function () {
-    Route::post('login', 'Api\UserController@login');
-    Route::post('signup', 'Api\UserController@signup');
-    Route::get('logout', 'Api\UserController@logout');
-    //Route::get('user', 'UserController@user');
-}
-);
+});
 
+Route::middleware('auth:api')->group(function (){
+    Route::post('logout', [AuthController::class,'logout'])->name('logout.api');
+    Route::apiResource('events', 'Api\EventController');
+});
 
+/*
 Route::apiResource('friendship_status','Api\FriendshipStatusController');
 Route::apiResource('event_interest_levels','Api\EventInterestLevelController');
 Route::apiResource('event_statuses','Api\EventStatusController');

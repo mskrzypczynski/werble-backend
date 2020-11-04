@@ -19,7 +19,7 @@ class CreateEventParticipantsTable extends Migration
             $table->bigInteger  ('user_id')->unsigned();
             $table->bigInteger  ('event_id')->unsigned();
             $table->bigInteger  ('participant_status_id')->unsigned();
-
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')->references('user_id')->on('users');

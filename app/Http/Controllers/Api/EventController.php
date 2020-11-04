@@ -17,8 +17,7 @@ class EventController extends Controller
      */
     public function index()
     {
-
-        return (new EventResourceCollection(Event::paginate()))->response();
+        return (new EventResourceCollection(Event::paginate()));
     }
 
     /**

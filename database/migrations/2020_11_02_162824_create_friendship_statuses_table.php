@@ -16,6 +16,7 @@ class CreateFriendshipStatusesTable extends Migration
         Schema::create('friendship_statuses', function (Blueprint $table) {
             $table->id      ('friendship_status_id')->unique()->autoIncrement();
             $table->string  ('friendship_status_name')->unique();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
