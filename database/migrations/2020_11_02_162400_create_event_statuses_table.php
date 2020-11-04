@@ -16,6 +16,7 @@ class CreateEventStatusesTable extends Migration
         Schema::create('event_statuses', function (Blueprint $table) {
             $table->id      ('event_status_id')->unique()->autoIncrement();
             $table->string  ('event_status_name');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

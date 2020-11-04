@@ -18,7 +18,7 @@ class CreateUserFriendsTable extends Migration
             $table->bigInteger  ('user_id')->unsigned();
             $table->bigInteger  ('friend_id')->unsigned();
             $table->bigInteger  ('friendship_status_id')->unsigned();
-
+            $table->softDeletes();
 
             $table->timestamps();
 

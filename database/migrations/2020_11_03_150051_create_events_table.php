@@ -29,7 +29,7 @@ class CreateEventsTable extends Migration
             $table->bigInteger  ('event_status_id')->unsigned();
             $table->bigInteger  ('event_creator_id')->unsigned();
             $table->bigInteger  ('event_type_id')->unsigned();
-
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('event_visibility_level_id')->references('user_id')->on('users');

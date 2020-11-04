@@ -19,15 +19,16 @@ class CreateUsersTable extends Migration
             $table->string  ('email')->unique();
             $table->dateTime('email_verified_at')->nullable();
             $table->string  ('password');
-            $table->string  ('first_name');
-            $table->string  ('last_name');
-            $table->date    ('birth_date');
+            $table->string  ('first_name')->nullable();
+            $table->string  ('last_name')->nullable();
+            $table->date    ('birth_date')->nullable();
             $table->string  ('description')->nullable();
             $table->double  ('longitude')->nullable();
             $table->double  ('latitude')->nullable();
             $table->boolean ('is_admin');
             $table->boolean ('is_active');
-            $table->string  ('api_token')->unique();
+            //$table->string  ('api_token')->unique();
+            $table->softDeletes();
 
             $table->rememberToken();
             $table->timestamps();
