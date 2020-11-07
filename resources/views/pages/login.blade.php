@@ -15,7 +15,7 @@
 
     @include('includes.title')
 
-    <form method="POST" action="/api/user/login">
+    <form method="POST" action="{{route('login.api')}}">
         @csrf
         <label for="login" class="logins">{{ __('LOGIN') }}</label>
         <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}" required autocomplete="login" autofocus>

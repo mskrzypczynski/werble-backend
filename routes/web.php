@@ -38,8 +38,10 @@ Route::get('home', function () {
     //session(['key' => 'value']);
     //$request->session()->put('user', $request->input('first_name'));
    // echo  $request->session()->get('user');
-
-    return view('pages.home');
+    //$user = User::where('login')->first();
+    //$token = $user->createToken('Laravel Password Grant Client')->accessToken;
+    //$response = ['token' => $token];
+    return view('pages.home');//,compact(['user','response']))->with($response,200);
 })->name('home.web');
 
 Route::get('users/{user}', function(){

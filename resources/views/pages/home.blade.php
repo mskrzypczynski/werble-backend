@@ -16,8 +16,8 @@
         <h2>MAP</h2>
     {{Session::get('accessToken')}}
     <?php
-
         ?>
+        <p>User: {{$reponse}}</p>
     </div>
 
 </div>
