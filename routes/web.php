@@ -19,24 +19,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('pages.welcome');
     //return  file('laravel/resources/views/index.html');
-});
+})->name('pages.welcome');
 
 Route::get('logout', function () {
     return view('pages.welcome');
     //return  file('laravel/resources/views/index.html');
-});
+})->name('logout.web');
 
 Route::get('login', function () {
     return view('pages.login');
-});
+})->name('login.web');
 
 Route::get('signup', function () {
     return view('pages.signup');
-});
+})->name('signup.web');
 
 Route::get('home', function () {
+    //session(['key' => 'value']);
+    //$request->session()->put('user', $request->input('first_name'));
+   // echo  $request->session()->get('user');
+
     return view('pages.home');
-});
+})->name('home.web');
 
 Route::get('users/{user}', function(){
     return User::paginate(20);
@@ -45,7 +49,7 @@ Route::get('users/{user}', function(){
 Route::get('yourevents', function () {
     $event = Event::findOrFail(1); //user_id!
     return view('pages.yourevents',compact('event'));
-});
+})->name('yourevents.web');
 /*
 Route::get('profile', function(User $user){
     //$id = Auth::user()->user_id;
@@ -65,5 +69,7 @@ Route::get('profile', function() {
         return response('Unauthenticated user');
     }*/
 });
+
+
 
 

@@ -30,8 +30,8 @@
             @show
 
             @section('buttons')
-            <a href="http://192.168.10.10/login" ><button>Login</button></a>
-            <a href="http://192.168.10.10/signup" ><button>Signup</button></a>
+            <a href="{{route('login.web')}}" ><button>Login</button></a>
+            <a href="{{route('signup.web')}}" ><button>Signup</button></a>
             @show
 
 </div>
