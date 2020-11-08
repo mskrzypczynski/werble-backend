@@ -18,11 +18,15 @@ class TestSeeder extends Seeder
     {
 
 
-        User::factory()->create(
-            [   'email' => 'test2@test.com',
-                'password' => bcrypt('password')
+        $user = User::factory()->create(
+            [
+                'login' => 'admin2',
+                'email' => 'admin2@app.com',
+                'password' => bcrypt('password'),
+                'is_admin' => 0,
             ]
         );
+        $user->createToken('Laravel Password Grant Client')->accessToken;
     }
 
 }

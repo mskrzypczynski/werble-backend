@@ -79,8 +79,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $attributes = [
-        'is_admin' => false,
-        'is_active' => true,
+        'is_admin' => 0,
+        'is_active' => 1,
     ];
 
 
@@ -112,5 +112,11 @@ class User extends Authenticatable
 
     public function AauthAcessToken(){
         return $this->hasMany('\App\OauthAccessToken');
+    }
+
+    //checks if user's is_admin is set
+    public function isAdmin()
+    {
+        return $this->is_admin;
     }
 }
