@@ -16,9 +16,9 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth('api')->check() && auth('api')->user()->isAdmin());
+        if(auth('api')->check() && auth('api')->user()->isAdmin())
             return $next($request);
 
-        return redirect('/');
+        return response()->json(['message' => 'Acces denied'],403);
     }
 }
