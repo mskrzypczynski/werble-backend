@@ -22,7 +22,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 // Public routes
 Route::group(['middleware'=> ['cors','json.response' ]], function () {
     Route::post('login', [AuthController::class,'login'])->name('login.api');
@@ -55,8 +54,6 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
         Route::get('users/{id}', function ($id) {
 
         });
-
-
         // types and statuses
         Route::apiResource('event_statuses','Api\EventStatusController');
         Route::apiResource('event_types','Api\EventTypeController');
