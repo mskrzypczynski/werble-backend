@@ -18,4 +18,16 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+/*
+    public function handle($request, Closure $next, ...$guards)
+    {
+    if ($request->cookie('cookie-token')) {
+        $request->headers->set('Authorization', 'Bearer ' . $request->cookie('cookie-token'));
+
+    }
+
+    $this->authenticate($request, $guards);
+
+    return $next($request);
+    }*/
 }
