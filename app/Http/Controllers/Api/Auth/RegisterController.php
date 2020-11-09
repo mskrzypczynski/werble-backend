@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Http;
 
 class RegisterController extends Controller
 {
+    use IssueTokenTrait;
+
     private $client;
 
     public function __construct()
@@ -35,22 +37,6 @@ class RegisterController extends Controller
         $user = User::create($request->all());
 
 
-        $params = [
-            'grant_type' => "password",
-            'client_id' => $this->client->id,
-            'client_secret' => $this->client->secret,
-            'username' => $request->login,
-            'password' => $password,
-            'scope' => '*'
-        ];
-
-        $request->request->add($params);
-
-        //dd($request);
-        $proxy = Request::create(
-            'oauth/token',
-            'POST');
-
-        return Route::dispatch($proxy);
+        return $this->issueToken($request,'password');
     }
 }
