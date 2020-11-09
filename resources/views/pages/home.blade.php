@@ -17,7 +17,6 @@
     {{Session::get('accessToken')}}
     <?php
         ?>
-        <p>User: {{$reponse}}</p>
     </div>
 
 </div>

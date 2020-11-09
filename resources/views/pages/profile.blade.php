@@ -13,13 +13,15 @@
 <div style="margin-left:25%">
 
     <div class="w3-container">
-        <?php
-        dd($user->login);
-        ?>
-        @auth
+        @auth <!--seen just for authenticated-->
         <h2>{{ Auth::guard('api')->user()->login }} </h2>
->        @endauth
+        {{$user->id}}
+        {{auth()->user()->id}}
+        @endauth
 
+        @if(Auth()::user())
+            {{Auth::user()->name}}
+        @endif
     </div>
 
 </div>

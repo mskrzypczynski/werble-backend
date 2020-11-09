@@ -65,12 +65,12 @@ Route::get('profile', function(User $user){
 
 Route::get('profile', function() {
     //if (Auth::guard('user:api')->check()) {
-    $user = Auth::guard('api')->user();
-    return view('pages.profile', ['user' => $user]);
+    //$user = Auth::guard('api')->user();
+    return view('pages.profile');//, ['user' => $user]);
     /*} else {
         return response('Unauthenticated user');
     }*/
-});
+})->name('profile.web');
 
 
 
