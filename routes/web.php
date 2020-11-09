@@ -46,7 +46,7 @@ Route::get('users/{user}', function(){
     return User::paginate(20);
 });
 
-<<<<<<< HEAD
+
 Route::get('yourevents', function () {
     $event = Event::findOrFail(1); //user_id!
     return view('pages.yourevents',compact('event'));

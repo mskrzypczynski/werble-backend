@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Dotenv\Exception\ValidationException;
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -25,6 +27,21 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
+
+    /*public function render($request, Exception $exception)
+    {
+        if($request->expectsJson()){
+            if($exception instanceof ValidationException){
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    'errors'=> $exception->validator->errors()
+                ]);
+            }
+        }
+
+        return parent::render($request,$exception);
+    }
+    */
 
     /**
      * Register the exception handling callbacks for the application.
