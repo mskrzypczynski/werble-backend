@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Laravel\Passport\Client;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 class LoginController extends Controller
@@ -26,6 +28,18 @@ class LoginController extends Controller
             'login' => 'required',
             'password' => 'required'
         ]);
+
+        $user = User::where('login',$request->login)->first();
+
+        if (!$user) {
+            $response = ["message" =>'User does not exist'];
+            return response($response, 422);
+        }
+
+        if (!Hash::check($request->password, $user->password)){
+            $response = ["message" => "Password mismatch"];
+            return response($response, 422);
+        }
 
         $params = [
             'grant_type' => "password",
@@ -56,7 +70,6 @@ class LoginController extends Controller
             'grant_type' => "refresh_token",
             'client_id' => $this->client->id,
             'client_secret' => $this->client->secret,
-
         ];
 
         $request->request->add($params);
@@ -78,7 +91,7 @@ class LoginController extends Controller
             ->update(['revoked' => true]);
 
         $accessToken->revoke();
-
-        return response()->json([],204);
+        $response = ['message' => 'You have been successfully logged out!'];
+        return response()->json($response,200);
     }
 }
