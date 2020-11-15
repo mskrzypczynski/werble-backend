@@ -9,11 +9,12 @@ trait IssueTokenTrait{
 
     public function issueToken(Request $request, $grantType, $scope = "*"){
 
+        //List of required parameters for Laravel Password Grant request
         $params = [
-            'grant_type' => $grantType,
-            'client_id' => $this->client->id,
+            'grant_type'    => $grantType,
+            'client_id'     => $this->client->id,
             'client_secret' => $this->client->secret,
-            'scope' => $scope
+            'scope'         => $scope
         ];
 
         if($grantType === 'password')
@@ -35,6 +36,5 @@ trait IssueTokenTrait{
             'POST');
 
         return Route::dispatch($proxy);
-
     }
 }
