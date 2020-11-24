@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\EventController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::apiResource('events','Api\EventController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -40,7 +41,7 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
     });
 
     Route::group(['prefix' => 'user'], function () {
-        Route::get('events');
+        Route::get('events',[\App\Http\Controllers\Api\UserController::class,'userEvents']);
         Route::post('events/create');
         Route::get('events/{id}');
 

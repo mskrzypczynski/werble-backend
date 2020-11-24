@@ -66,7 +66,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $accessToken = Auth::user()->token();
+        $accessToken = Auth::guard('api')->user()->token();
         $refreshToken = DB::table('oauth_refresh_tokens')
             ->where('access_token_id',$accessToken->id)
             ->update(['revoked' => true]);

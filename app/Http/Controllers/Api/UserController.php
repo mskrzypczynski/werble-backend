@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
 use App\Models\User;
@@ -103,6 +104,11 @@ class UserController extends Controller
 
     }
 
+    public function userEvents(Request $request){
+        $user = Auth::guard('api')->user();
+        return EventResource::collection($user->events()->get());
+    }
+
     public function login( Request $request ) {
 
         $login = $request->only('login','password');
@@ -157,5 +163,6 @@ class UserController extends Controller
             return response()->json(['success', 'user singned up successfully!']);
         }
     }
+
 
 }
