@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -107,6 +108,29 @@ class UserController extends Controller
     public function userEvents(Request $request){
         $user = Auth::guard('api')->user();
         return EventResource::collection($user->events()->get());
+    }
+
+    public function createEvent(Request $request){
+        $userId = Auth::guard('api')->user()->user_id;
+        $this->validate($request,
+            [
+                'name' =>'required',
+                'location'=>'required',
+                'description'=>'nullable',
+                'datetime' => 'required',
+            ]);
+
+        //$event = Event::create($request->all());
+        $event = Event::create([
+                'name' =>$request->name,
+            'location' =>$request->location,
+            'description'=>$request->description,
+            'datetime'=>'2020-11-25 23:36:17',
+            'event_creator_id' => $userId
+        ]);
+
+        $response = ['message' => 'You have created event!'];
+        return response()->json($response,200);
     }
 
     public function login( Request $request ) {

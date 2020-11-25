@@ -32,7 +32,18 @@ class Event extends Model
      * @var array
      */
     protected $attributes = [
-        'is_active' => true
+        'is_active' => true,
+        'event_visibility_level_id' =>1,
+        'event_status_id' => 1,
+        'event_creator_id' => 1,
+        'event_type_id' => 1,
+    ];
+
+    protected $fillable = [
+        'name' ,
+        'location',
+        'description',
+        'datetime'
     ];
 
 
