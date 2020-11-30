@@ -76,19 +76,26 @@ class UserController extends Controller
      * @param Request $request
      * @return UserResource
      */
-    public function update(User $user, Request $request): UserResource
+    public function update(Request $request, $id): UserResource
     {
         $request->validate([
-            'login' => 'required',
-            'email'=> 'required',
-            'password'=> 'required',
+            //'login' => 'required',
+            //'email'=> 'required',
+            //'password'=> 'required',
             'first_name'=> 'required',
             'last_name'=> 'required',
             'birth_date'=> 'required',
+            'description' => 'nullable'
         ]);
+        //$user = User::first($id);
+        $user = User::findOrFail($id);
+        //$user->birth_date=$request->birth_date;
+        /*$user->last_name=$request->last_name;
+        $user->first_name=$request->first_name;
+        $user->description=$request->description;*/
 
+        //$user->save($request->all());
         $user->update($request->all());
-
         return new UserResource($user);
     }
 

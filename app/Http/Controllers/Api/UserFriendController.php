@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserFriend;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserFriendController extends Controller
 {
@@ -69,4 +70,6 @@ class UserFriendController extends Controller
     {
         //
     }
+
+
 }

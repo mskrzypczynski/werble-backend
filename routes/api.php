@@ -44,6 +44,9 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
         Route::get('events',[\App\Http\Controllers\Api\UserController::class,'userEvents']);
         Route::post('events/create',[\App\Http\Controllers\Api\UserController::class,'createEvent']);
         Route::get('events/{id}');
+        Route::get('participant',[\App\Http\Controllers\Api\UserController::class,'userParticipant']);
+        //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);
+        Route::put('{id}',[\App\Http\Controllers\Api\UserController::class,'update']);
 
     });
 
