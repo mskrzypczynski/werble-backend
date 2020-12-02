@@ -39,6 +39,11 @@ class EventReview extends Model
         'is_active' => true,
     ];
 
+    protected $fillable = [
+        'content',
+        'rating'
+        ];
+
     /* One-to-One Relationships */
     public function event()
     {

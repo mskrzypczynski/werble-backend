@@ -7,6 +7,8 @@ use App\Http\Resources\EventResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\UserResourceCollection;
 use App\Models\Event;
+use App\Models\EventParticipant;
+use App\Models\EventReview;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -139,6 +141,44 @@ class UserController extends Controller
         $response = ['message' => 'You have created event!'];
         return response()->json($response,200);
     }
+
+    public function createReview(Request $request){
+        $userId = Auth::guard('api')->user()->user_id;
+        $participantId = EventParticipant::where('user_id', $userId)
+            ->where('event_id',$request->event_id)
+            ->firstOrFail()->event_participant_id;
+
+
+            $this->validate($request,
+                [
+                    'event_id' => 'required',
+                    'content' => 'required',
+                    'rating' => 'required',
+                ]);
+            $review =
+                new EventReview;
+
+            $review->event_participant_id = $participantId;
+            $review->event_id =$request->event_id;
+            $review->content = $request['content'];
+            $review->rating = $request->rating;
+            $review->save();
+
+            $response = ['message' => 'You have created review!'];
+            return response()->json($response, 200);
+
+
+        }
+
+
+
+    /*public function joinEvent(Request $request){
+        $userId = Auth::guard('api')->user()->user_id;
+
+        $response = ['message' => 'You have joined the event!'];
+        return response()->json($response,200);
+    }*/
+
 
     public function login( Request $request ) {
 

@@ -29,6 +29,8 @@ class RelationshipSeeder extends Seeder
                ->create();
 
         EventParticipant::factory(100)->create();
+
+        EventReview::factory(10)->create();
     }
 }
 //to do || create event_participant with creator when creating event

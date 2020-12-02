@@ -25,11 +25,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-    User::factory(10)->create();
+        $this->call(NoRelationshipSeeder::class);
+        $this->call(RelationshipSeeder::class);
+    //EventParticipant::factory(3) ->create(3);
+    //User::factory(10)->create();
     //UserFriend::factory(3)->create();
-    EventStatus::factory(3)->create();
-    EventType::factory(3)->create();
-    Event::factory(5)->create();
+    //EventStatus::factory(3)->create();
+    //EventType::factory(3)->create();
+    //Event::factory(5)->create();
     //EventParticipant::factory(5)->create();
     //EventReview::factory(2)->create();
     //ParticipantStatus::factory(5)->create();

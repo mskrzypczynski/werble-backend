@@ -43,6 +43,7 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
     Route::group(['prefix' => 'user'], function () {
         Route::get('events',[\App\Http\Controllers\Api\UserController::class,'userEvents']);
         Route::post('events/create',[\App\Http\Controllers\Api\UserController::class,'createEvent']);
+        Route::post('events/review/create',[\App\Http\Controllers\Api\UserController::class,'createReview']);
         Route::get('events/{id}');
         Route::get('participant',[\App\Http\Controllers\Api\UserController::class,'userParticipant']);
         //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);

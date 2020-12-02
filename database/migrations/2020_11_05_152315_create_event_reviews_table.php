@@ -17,7 +17,6 @@ class CreateEventReviewsTable extends Migration
             $table->id          ('event_review_id')->unique()->autoIncrement();
             $table->string      ('content')->nullable();
             $table->integer     ('rating')->nullable();
-            $table->dateTime    ('datetime');
             $table->boolean     ('is_active');
             $table->bigInteger  ('event_participant_id')->unsigned();
             $table->bigInteger  ('event_id')->unsigned();
