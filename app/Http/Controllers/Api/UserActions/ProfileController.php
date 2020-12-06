@@ -18,7 +18,7 @@ class ProfileController extends Controller
         ]);
 
         $user->longitude = $request->longitude;
-        $user->latitude = $request->longitude;
+        $user->latitude = $request->latitude;
 
         $user->save();
         return response()->json(200,['message' => 'Successfully updated localization']);

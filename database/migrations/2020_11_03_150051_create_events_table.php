@@ -20,8 +20,8 @@ class CreateEventsTable extends Migration
             $table->string      ('zip_code')->nullable();
             $table->string      ('street_name')->nullable();
             $table->string      ('house_number')->nullable();
-            $table->double      ('longitude')->nullable();
-            $table->double      ('latitude')->nullable();
+            $table->decimal      ('longitude',10,7)->nullable();
+            $table->decimal     ('latitude',10,7)->nullable();
             $table->string      ('description')->nullable();
             $table->dateTime    ('datetime');
             $table->boolean     ('is_active');

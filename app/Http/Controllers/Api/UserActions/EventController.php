@@ -99,7 +99,7 @@ class EventController extends Controller
         $event = Event::where('event_id',$request->event_id)->firstOrFail();
 
         if(!$user->user_id === $event->event_creator_id )
-            return response()->json(403,'You dont have right to do this');
+            return response()->json(403,'You dont have rights to do this');
 
         $event -> delete();
 

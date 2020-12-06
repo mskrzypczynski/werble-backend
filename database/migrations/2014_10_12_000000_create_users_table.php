@@ -23,8 +23,8 @@ class CreateUsersTable extends Migration
             $table->string  ('last_name')->nullable();
             $table->date    ('birth_date')->nullable();
             $table->string  ('description')->nullable();
-            $table->double  ('longitude')->nullable();
-            $table->double  ('latitude')->nullable();
+            $table->decimal ('longitude',10,7)->nullable();
+            $table->decimal  ('latitude',10,7)->nullable();
             $table->boolean ('is_admin');
             $table->boolean ('is_active');
             //$table->string  ('api_token')->unique();
