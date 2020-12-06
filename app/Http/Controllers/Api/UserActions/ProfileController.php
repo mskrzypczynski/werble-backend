@@ -21,7 +21,7 @@ class ProfileController extends Controller
         $user->latitude = $request->latitude;
 
         $user->save();
-        return response()->json(200,['message' => 'Successfully updated localization']);
+        return response()->json(['message' => 'Successfully updated localization'],200);
     }
 
 
