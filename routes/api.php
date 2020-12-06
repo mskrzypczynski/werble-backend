@@ -69,8 +69,6 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
         //Route::get('events/{id}');
         Route::get('participant',[\App\Http\Controllers\Api\UserActions\EventParticipantController::class,'getUserParticipatingEvents']);
         //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);
-        Route::put('{id}',[\App\Http\Controllers\Api\UserController::class,'update']);
-
     });
 
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
