@@ -54,7 +54,7 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
         Route::get('profile',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'getAuthenticatedUserProfile']);
 
         Route::get('events',[\App\Http\Controllers\Api\UserActions\EventController::class,'getUserEvents']);
-        Route::get('events/local',[\App\Http\Controllers\Api\UserActions\EventController::class,'getEvents']);
+        Route::get('events/local',[\App\Http\Controllers\Api\UserActions\EventController::class,'getLocalEvents']);
         Route::get('events/{id}/participants',[\App\Http\Controllers\Api\UserActions\EventParticipantController::class,'getEventParticipantsProfiles']);
 
         Route::post('participant/change', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class,'changeParticipantStatus']);
