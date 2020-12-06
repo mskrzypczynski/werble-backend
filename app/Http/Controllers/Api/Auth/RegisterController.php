@@ -22,6 +22,9 @@ class RegisterController extends Controller
     //function handling user registration
     public function register(Request $request)
     {
+        // check if password grant client exists
+        if(!$this->client) return response()->json('Password grant client not found', 422);
+
         //validate data given at register or return errors
         $this->validate($request,
             [

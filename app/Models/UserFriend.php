@@ -6,6 +6,34 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\UserFriend
+ *
+ * @property int $friendship_id
+ * @property int $user_id
+ * @property int $friend_id
+ * @property int $friendship_status_id
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $beingFriend
+ * @property-read \App\Models\User $beingUser
+ * @property-read \App\Models\FriendshipStatus $status
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend newQuery()
+ * @method static \Illuminate\Database\Query\Builder|UserFriend onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend query()
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereFriendId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereFriendshipId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereFriendshipStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|UserFriend whereUserId($value)
+ * @method static \Illuminate\Database\Query\Builder|UserFriend withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|UserFriend withoutTrashed()
+ * @mixin \Eloquent
+ */
 class UserFriend extends Model
 {
     use HasFactory, SoftDeletes;

@@ -9,6 +9,8 @@ trait IssueTokenTrait{
 
     public function issueToken(Request $request, $grantType, $scope = "*"){
 
+
+
         //List of required parameters for Laravel Password Grant request
         $params = [
             'grant_type'    => $grantType,

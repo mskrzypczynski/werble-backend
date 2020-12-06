@@ -17,7 +17,13 @@ use App\Http\Controllers\Api\EventController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('events','Api\EventController');
+//Route::apiResource('events','Api\EventController');
+
+Route::get('test',function (){
+    $event = \App\Models\Event::findOrFail(1);
+    return $event['name'];
+});
+
 Route::apiResource('users','Api\UserController');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -33,6 +39,7 @@ Route::group(['middleware'=> ['cors','json.response' ]], function () {
 Route::group(['middleware' => ['cors','json.response', 'auth:api']], function (){
     //logout
     Route::post('logout', [LoginController::class,'logout'])->name('logout.api');
+    Route::post('logout_all', [LoginController::class,'logoutAll'])->name('logoutAll.api');
     Route::post('refresh',[LoginController::class,'refresh'])->name('refresh.api');
 
     Route::get('is_admin', function()
@@ -40,11 +47,19 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
         return Auth::guard('api')->user()->isAdmin();
     });
 
+
+
+
     Route::group(['prefix' => 'user'], function () {
-        Route::get('events',[\App\Http\Controllers\Api\UserController::class,'userEvents']);
-        Route::post('events/create',[\App\Http\Controllers\Api\UserController::class,'createEvent']);
-        Route::post('events/review/create',[\App\Http\Controllers\Api\UserController::class,'createReview']);
-        Route::get('events/{id}');
+        Route::get('profile',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'getAuthenticatedUserProfile']);
+
+        Route::get('events',[\App\Http\Controllers\Api\UserActions\EventController::class,'getUserEvents']);
+
+        Route::post('events/review/create',[\App\Http\Controllers\Api\UserActions\EventReviewController::class,'createReview']);
+        Route::post('events/create',[\App\Http\Controllers\Api\UserActions\EventController::class,'createEvent']);
+        Route::post('events/edit',[\App\Http\Controllers\Api\UserActions\EventController::class,'editEvent']);
+
+        //Route::get('events/{id}');
         Route::get('participant',[\App\Http\Controllers\Api\UserController::class,'userParticipant']);
         //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);
         Route::put('{id}',[\App\Http\Controllers\Api\UserController::class,'update']);

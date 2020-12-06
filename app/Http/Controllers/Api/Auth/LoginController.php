@@ -14,19 +14,21 @@ class LoginController extends Controller
 {
     use IssueTokenTrait;
 
-    //Client for Passport Password Grant
+    // Client for Passport Password Grant
     private $client;
 
     public function __construct()
     {
-        //Laravel Passport Grant Client default id is 2
+        // Laravel Passport Grant Client default id is 2
         $this->client = Client::find(2);
     }
 
 
     public function login(Request $request)
     {
-        //validate request data
+        // check if password grant client exists
+        if(!$this->client) return response()->json('Password grant client not found', 422);
+        // validate request data
         $this->validate($request,
         [
             'login'     => 'required',
@@ -39,13 +41,13 @@ class LoginController extends Controller
         //check if user exists
         if (!$user) {
             $response = ["message" =>'User does not exist'];
-            return response($response, 422);
+            return response()->json($response, 422);
         }
 
         //check if hash of given password and hash in db matches
         if (!Hash::check($request->password, $user->password)){
-            $response = ["message" => "Password mismatch"];
-            return response($response, 422);
+            $response = ["message" => "Given password doesn't match"];
+            return response()->json($response, 422);
         }
 
         //get access,refresh tokens for user from oauth/token
@@ -56,6 +58,9 @@ class LoginController extends Controller
 
     public function refresh(Request $request)
     {
+        // check if password grant client exists
+        if(!$this->client) return response()->json('Password grant client not found', 422);
+
         $this->validate($request, [
             'refresh_token' => 'required'
         ]);
@@ -75,4 +80,26 @@ class LoginController extends Controller
         $response = ['message' => 'You have been successfully logged out!'];
         return response()->json($response,200);
     }
+
+    public function logoutAll(Request  $request){
+        $user = $request->user();
+
+        // Revoke all of user's access tokens
+        $accessTokens = DB::table('oauth_access_tokens')
+            ->where('user_id',$user->user_id);
+        $accessTokens->update(['revoked'=>true]);
+
+
+        // Revoke all of user's refresh tokens
+        foreach ($accessTokens->get() as $accessToken)
+        {
+            $refreshToken = DB::table('oauth_refresh_tokens')
+                ->where('access_token_id',$accessToken->id);
+            $refreshToken->update(['revoked' => true]);
+       }
+
+        $response = ['message' => 'You have been successfully logged out from all devices!'];
+        return response()->json($response,200);
+    }
+
 }
