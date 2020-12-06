@@ -10,6 +10,21 @@ use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
+    public function updateUserPosition(Request $request){
+        $user = $request->user();
+        $this->validate($request,[
+            'latitude' => 'required',
+            'longitude' => 'required'
+        ]);
+
+        $user->longitude = $request->longitude;
+        $user->latitude = $request->longitude;
+
+        $user->save();
+        return response()->json(200,['message' => 'Successfully updated localization']);
+    }
+
+
     public function getAuthenticatedUserProfile(Request $request){
         $user = $request->user();
         return (new ProfileResource($user));

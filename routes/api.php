@@ -55,11 +55,17 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
 
         Route::get('events',[\App\Http\Controllers\Api\UserActions\EventController::class,'getUserEvents']);
         Route::get('events/local',[\App\Http\Controllers\Api\UserActions\EventController::class,'getEvents']);
+        Route::get('events/{id}/participants',[\App\Http\Controllers\Api\UserActions\EventParticipantController::class,'getEventParticipantsProfiles']);
 
+        Route::post('participant/change', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class,'changeParticipantStatus']);
         Route::post('events/review/create',[\App\Http\Controllers\Api\UserActions\EventReviewController::class,'createReview']);
         Route::post('events/create',[\App\Http\Controllers\Api\UserActions\EventController::class,'createEvent']);
         Route::post('events/edit',[\App\Http\Controllers\Api\UserActions\EventController::class,'editEvent']);
 
+
+
+
+        Route::put('position',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'updateUserPosition']);
         //Route::get('events/{id}');
         Route::get('participant',[\App\Http\Controllers\Api\UserActions\EventParticipantController::class,'getUserParticipatingEvents']);
         //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);

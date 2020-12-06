@@ -112,7 +112,7 @@ class EventController extends Controller
         return EventResource::collection($events);
     }
 
-    public function getEvents(Request $request){
+    public function getLocalEvents(Request $request){
         $user = $request->user();
         $userLat = $user->latitude;
         $userLng = $user->longitude;
@@ -126,6 +126,11 @@ class EventController extends Controller
         });
         //dd($markers);
         $events = $markers->where('distance','<', $distance);
+        return EventResource::collection($events);
+    }
+
+    public function getAllEvents(Request $request){
+        $events = Event::all();
         return EventResource::collection($events);
     }
 
