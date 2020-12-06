@@ -54,6 +54,7 @@ Route::group(['middleware' => ['cors','json.response', 'auth:api']], function ()
         Route::get('profile',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'getAuthenticatedUserProfile']);
 
         Route::get('events',[\App\Http\Controllers\Api\UserActions\EventController::class,'getUserEvents']);
+        Route::get('events/local',[\App\Http\Controllers\Api\UserActions\EventController::class,'getEvents']);
 
         Route::post('events/review/create',[\App\Http\Controllers\Api\UserActions\EventReviewController::class,'createReview']);
         Route::post('events/create',[\App\Http\Controllers\Api\UserActions\EventController::class,'createEvent']);

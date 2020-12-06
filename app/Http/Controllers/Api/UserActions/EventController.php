@@ -12,6 +12,28 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
+    private function calculateDistanceBetweenTwoAddresses($lat1, $lng1, $lat2, $lng2){
+        $lat1 = deg2rad($lat1);
+        $lng1 = deg2rad($lng1);
+
+        $lat2 = deg2rad($lat2);
+        $lng2 = deg2rad($lng2);
+
+        $delta_lat = $lat2 - $lat1;
+        $delta_lng = $lng2 - $lng1;
+
+        $hav_lat = (sin($delta_lat / 2))**2;
+        $hav_lng = (sin($delta_lng / 2))**2;
+
+        $distance = 2 * asin(sqrt($hav_lat + cos($lat1) * cos($lat2) * $hav_lng));
+
+        $distance = 6371*$distance;
+        // If you want calculate the distance in miles instead of kilometers, replace 6371 with 3959.
+
+        return $distance;
+    }
+
+
     public function createEvent(Request $request){
         $user = $request->user();
 
@@ -88,6 +110,23 @@ class EventController extends Controller
         $user = $request->user();
         $events = $user->events()->where('is_active',1)->get();
         return EventResource::collection($events);
+    }
+
+    public function getEvents(Request $request){
+        $user = $request->user();
+        $userLat = $user->latitude;
+        $userLng = $user->longitude;
+
+        $events = Event::all();
+        $distance = 10; // kilometers
+
+        $markers = collect($events)->map(function($event) use ($userLat,$userLng) {
+            $event['distance'] = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+            return $event;
+        });
+        //dd($markers);
+        $events = $markers->where('distance','<', $distance);
+        return $events;
     }
 
 }
