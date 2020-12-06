@@ -126,7 +126,7 @@ class EventController extends Controller
         });
         //dd($markers);
         $events = $markers->where('distance','<', $distance);
-        return $events;
+        return EventResource::collection($events);
     }
 
 }
