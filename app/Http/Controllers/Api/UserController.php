@@ -130,13 +130,21 @@ class UserController extends Controller
             ]);
 
         //$event = Event::create($request->all());
-        $event = Event::create([
+        /*$event = Event::create([
                 'name' =>$request->name,
             'location' =>$request->location,
             'description'=>$request->description,
             'datetime'=>'2020-11-25 23:36:17',
             'event_creator_id' => $userId
-        ]);
+        ]);*/
+
+        $event = new Event;
+        $event ->event_creator_id = $userId;
+        $event->name=$request->name;
+        $event->location=$request->location;
+        $event->description=$request->description;
+        $event->datetime=$request->datetime;
+        $event->save();
 
         $response = ['message' => 'You have created event!'];
         return response()->json($response,200);
@@ -155,8 +163,7 @@ class UserController extends Controller
                     'content' => 'required',
                     'rating' => 'required',
                 ]);
-            $review =
-                new EventReview;
+            $review = new EventReview;
 
             $review->event_participant_id = $participantId;
             $review->event_id =$request->event_id;
