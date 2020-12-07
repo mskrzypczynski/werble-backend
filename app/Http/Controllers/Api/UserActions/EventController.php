@@ -38,20 +38,17 @@ class EventController extends Controller
         $user = $request->user();
 
         $toCheck = [
-            [
                 'name' => 'required',
                 'location' => 'required',
                 'description' => 'nullable',
                 'datetime' => 'required',
                 'longitude' => 'nullable',
                 'latitude' => 'nullable'
-            ]
         ];
+
         $toUpdate = [];
 
-
-        foreach ($toCheck as $key => $value) if ($request->has($key)) $toUpdate[$key] = $value;
-
+        foreach ($toCheck as $key => $value)  if ($request["$key"]) $toUpdate[$key] = $value;
         // validate sent data
         $this->validate($request,$toUpdate);
 
@@ -121,7 +118,8 @@ class EventController extends Controller
         $distance = 10; // kilometers
 
         $markers = collect($events)->map(function($event) use ($userLat,$userLng) {
-            $event['distance'] = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+            $event['distance'] = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng).fix;
+
             return $event;
         });
         //dd($markers);

@@ -39,13 +39,11 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $toCheck = [
-            [
                 'email' => 'nullable',
                 'first_name' => 'nullable',
                 'last_name' => 'nullable',
                 'birt_date' => 'nullable',
                 'description' => 'nullable',
-            ]
         ];
         $toUpdate = [];
 
