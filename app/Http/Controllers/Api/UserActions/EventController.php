@@ -118,7 +118,8 @@ class EventController extends Controller
         $distance = 10; // kilometers
 
         $markers = collect($events)->map(function($event) use ($userLat,$userLng) {
-            $event['distance'] = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng).fix;
+            $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+            $event['distance'] = sprintf("%0.3f",$distance);
 
             return $event;
         });
