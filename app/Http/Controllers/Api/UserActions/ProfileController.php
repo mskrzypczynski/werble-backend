@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\UserActions;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\ProfileResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -27,12 +28,15 @@ class ProfileController extends Controller
 
     public function getAuthenticatedUserProfile(Request $request){
         $user = $request->user();
-        return (new ProfileResource($user));
+        //return (new ProfileResource($user));
+        return UserResource::collection($user);
+
     }
 
     public function getUserProfile(Request $request, $id){
         $user = User::findOrFail($id);
-        return (new ProfileResource($user));
+        return UserResource::collection($user);
+        //return (new ProfileResource($user));
     }
 
     public function editAuthenticatedUserProfile(Request $request){

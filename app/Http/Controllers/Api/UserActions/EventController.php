@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\EventResourceCollection;
 use App\Models\Event;
+use App\Models\EventReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
@@ -109,6 +110,13 @@ class EventController extends Controller
         return EventResource::collection($events);
     }
 
+    public function getSingleEvent(Event $event, $id)
+    {
+        $event = Event::findOrFail($id);
+        //return new EventResource($event);
+        return  $event;
+    }
+
     public function getLocalEvents(Request $request){
         $user = $request->user();
         $userLat = $user->latitude;
@@ -132,5 +140,31 @@ class EventController extends Controller
         $events = Event::all();
         return EventResource::collection($events);
     }
+
+    /*public function createReview(Request $request){
+        $user = $request->user();
+        $event = $request->event();
+
+        $toCheck = [
+            'rating' => 'required',
+            'content' => 'required',
+        ];
+
+        $toCreate = [];
+
+        foreach ($toCheck as $key => $value)  if ($request["$key"]) $toCreate[$key] = $value;
+        // validate sent data
+        $this->validate($request,$toCreate);
+
+        // update only sent attr
+        $review = new EventReview();
+        foreach ($toCreate as $key => $value) $review[$key] = $request[$key];
+        $review ->event_participant_id = $user->user_id;
+        $event ->event_id = $event->event_id;
+        $review->save();
+
+        $response = ['message' => 'You have created review!'];
+        return response()->json($response,200);
+    }*/
 
 }
