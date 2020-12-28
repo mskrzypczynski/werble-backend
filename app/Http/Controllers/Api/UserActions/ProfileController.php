@@ -46,7 +46,7 @@ class ProfileController extends Controller
                 'email' => 'nullable',
                 'first_name' => 'nullable',
                 'last_name' => 'nullable',
-                'birt_date' => 'nullable',
+                'birth_date' => 'nullable',
                 'description' => 'nullable',
         ];
         $toUpdate = [];

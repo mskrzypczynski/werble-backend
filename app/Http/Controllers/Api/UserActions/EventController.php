@@ -123,6 +123,7 @@ class EventController extends Controller
         $userLng = $user->longitude;
 
         $events = Event::all();
+        //$events = $user->events()->where()
         $distance = 10; // kilometers
 
         $markers = collect($events)->map(function($event) use ($userLat,$userLng) {

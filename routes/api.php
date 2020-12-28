@@ -60,7 +60,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::post('events/review/create', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'createReview']);
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
         Route::post('events/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
-
+        Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
 
         Route::put('position', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'updateUserPosition']);
         //Route::get('events/{id}');
