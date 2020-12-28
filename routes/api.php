@@ -24,7 +24,7 @@ Route::get('test', function () {
     return $event['name'];
 });
 
-Route::apiResource('users', 'Api\UserController');
+//Route::apiResource('users', 'Api\UserController');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -57,6 +57,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::post('event/{id}/join', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'joinEvent']);
 
         Route::post('participant/change', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'changeParticipantStatus']);
+        Route::get('events/{id}/reviews', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getEventReviews']);
         Route::post('events/review/create', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'createReview']);
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
         Route::post('events/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);

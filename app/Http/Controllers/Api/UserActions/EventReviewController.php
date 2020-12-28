@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\UserActions;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventReviewResource;
 use App\Http\Resources\EventReviewResourceCollection;
+use App\Http\Resources\ProfileResource;
 use App\Http\Resources\UserResource;
+use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\EventReview;
 use App\Models\User;
@@ -42,5 +44,20 @@ class EventReviewController extends Controller
         return response()->json($response, 200);
 
 
+    }
+
+    public function getEventReviews(Request $request, $eventId)
+    {
+        $event = Event::where('event_id', $eventId)->first();
+        $answers = [];
+
+        $reviews = $event->reviews()->get();
+
+        foreach ($reviews as $review) {
+            array_push($answers, $review->participant()->first());
+        }
+
+        //return $reviews;
+        return EventReviewResource::collection($reviews);
     }
 }
