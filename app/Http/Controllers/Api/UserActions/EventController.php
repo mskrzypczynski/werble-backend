@@ -63,9 +63,10 @@ class EventController extends Controller
         return response()->json($response,200);
     }
 
-    public function editEvent(Request $request){
+    public function editEvent(Request $request, $eventId){
         $user = $request->user();
-        $event = Event::where('event_id',$request->event_id)->firstOrFail();
+        $event = Event::where('event_id',$eventId)->firstOrFail();
+        $event->event_id = $eventId;
 
         if(!$user->user_id === $event->event_creator_id )
             return response()->json(403,'You dont have right to do this');
@@ -75,7 +76,9 @@ class EventController extends Controller
             'name' => 'required',
             'location' => 'required',
             'description' => 'nullable',
-            'datetime' => 'nullable'
+            'datetime' => 'nullable',
+            'event_type_id' => 'required',
+
         ];
         $toUpdate = [];
 
@@ -124,7 +127,11 @@ class EventController extends Controller
 
         $events = Event::all();
         //$events = $user->events()->where()
-        $distance = 10; // kilometers
+        if ($request->has('distance')){
+            $distance = $request->distance;
+        }else {
+            $distance = 10; // kilometers
+        }
 
         $markers = collect($events)->map(function($event) use ($userLat,$userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);

@@ -49,13 +49,18 @@ class EventReviewController extends Controller
     public function getEventReviews(Request $request, $eventId)
     {
         $event = Event::where('event_id', $eventId)->first();
-        $answers = [];
+        //$answers = [];
 
         $reviews = $event->reviews()->get();
-
-        foreach ($reviews as $review) {
+        $reviews = collect($reviews)->map(function ($review){
+            $review['login'] = $review->participant()->first()->user()->first()->login;
+            //$review['login'] = $review->user()->login;
+            //$review['login'] = $review->user()->login;
+            return $review;
+        });
+        /*foreach ($reviews as $review) {
             array_push($answers, $review->participant()->first());
-        }
+        }*/
 
         //return $reviews;
         return EventReviewResource::collection($reviews);
