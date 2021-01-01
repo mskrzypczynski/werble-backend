@@ -59,8 +59,10 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::post('participant/change', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'changeParticipantStatus']);
         Route::get('events/{id}/reviews', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getEventReviews']);
         Route::post('events/review/create', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'createReview']);
+        Route::put('events/review/edit', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'editReview']);
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
         Route::put('events/{id}/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
+        //Route::put('events/{id}/edit/marker', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEventMarker']);
         Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
 
         Route::put('position', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'updateUserPosition']);

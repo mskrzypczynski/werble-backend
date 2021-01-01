@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\UserActions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
 use App\Http\Resources\EventReviewResource;
 use App\Http\Resources\EventReviewResourceCollection;
 use App\Http\Resources\ProfileResource;
@@ -64,5 +65,33 @@ class EventReviewController extends Controller
 
         //return $reviews;
         return EventReviewResource::collection($reviews);
+    }
+
+    public function editReview(Request $request, $eventId){
+        $user = $request->user();
+        $event = Event::where('event_id',$eventId)->firstOrFail();
+        $event->event_id = $eventId;
+
+        if(!$user->user_id === $event->event_creator_id )
+            return response()->json(403,'You dont have right to do this');
+
+        // model attrs to change sent in request, check if they exist
+        $toCheck = [
+            'rating' => 'required',
+            'content' => 'required',
+        ];
+        $toUpdate = [];
+
+
+        foreach ($toCheck as $key => $value) if ($request->has($key)) $toUpdate[$key] = $value;
+
+        // validate sent data
+        $this->validate($request,$toUpdate);
+
+        // update only sent attr
+        foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
+
+        $event->save();
+        return (new EventResource($event))->response()->setStatusCode(200);
     }
 }

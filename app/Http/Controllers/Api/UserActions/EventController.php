@@ -78,7 +78,8 @@ class EventController extends Controller
             'description' => 'nullable',
             'datetime' => 'nullable',
             'event_type_id' => 'required',
-
+            'longitude' => 'nullable',
+            'latitude' => 'nullable',
         ];
         $toUpdate = [];
 
@@ -94,6 +95,34 @@ class EventController extends Controller
         $event->save();
         return (new EventResource($event))->response()->setStatusCode(200);
     }
+
+    /*public function editEventMarker(Request $request, $eventId){
+        $user = $request->user();
+        $event = Event::where('event_id',$eventId)->firstOrFail();
+        $event->event_id = $eventId;
+
+        if(!$user->user_id === $event->event_creator_id )
+            return response()->json(403,'You dont have right to do this');
+
+        // model attrs to change sent in request, check if they exist
+        $toCheck = [
+            'longitude' => 'required',
+            'latitude' => 'required',
+        ];
+        $toUpdate = [];
+
+
+        foreach ($toCheck as $key => $value) if ($request->has($key)) $toUpdate[$key] = $value;
+
+        // validate sent data
+        $this->validate($request,$toUpdate);
+
+        // update only sent attr
+        foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
+
+        $event->save();
+        return (new EventResource($event))->response()->setStatusCode(200);
+    }*/
 
     public function deleteEvent(Request $request){
         $user = $request->user();
