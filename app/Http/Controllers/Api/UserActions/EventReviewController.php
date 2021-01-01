@@ -98,10 +98,9 @@ class EventReviewController extends Controller
         return (new EventReviewResource($participant))->response()->setStatusCode(200);
     }
 
-    public function getSingleReview(EventReview $eventReview, $id)
+    public function getSingleReview($eventId, $participantId)
     {
-        $eventReview = EventReview::findOrFail($id);
-        //return new EventResource($event);
-        return  $eventReview;
+         $review = EventReview::where('event_participant_id',$participantId)->where('event_id',$eventId)->firstOrFail();
+         return  $review;
     }
 }
