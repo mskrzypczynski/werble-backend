@@ -67,10 +67,13 @@ class EventReviewController extends Controller
         return EventReviewResource::collection($reviews);
     }
 
-    public function editReview(Request $request, $eventId){
+    public function editReview(Request $request, $eventId, $participantId){
         $user = $request->user();
         $event = Event::where('event_id',$eventId)->firstOrFail();
         $event->event_id = $eventId;
+
+        $participant = EventReview::where('event_participant_id',$participantId)->firstOrFail();
+        $participant->event_participant_id = $participantId;
 
         if(!$user->user_id === $event->event_creator_id )
             return response()->json(403,'You dont have right to do this');
@@ -89,9 +92,16 @@ class EventReviewController extends Controller
         $this->validate($request,$toUpdate);
 
         // update only sent attr
-        foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
+        foreach ($toUpdate as $key => $value) $participant[$key] = $request[$key];
 
-        $event->save();
-        return (new EventResource($event))->response()->setStatusCode(200);
+        $participant->save();
+        return (new EventReviewResource($participant))->response()->setStatusCode(200);
+    }
+
+    public function getSingleReview(EventReview $eventReview, $id)
+    {
+        $eventReview = EventReview::findOrFail($id);
+        //return new EventResource($event);
+        return  $eventReview;
     }
 }
