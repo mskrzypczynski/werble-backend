@@ -34,7 +34,6 @@ class EventParticipantFactory extends Factory
             'user_id'                    => $user->user_id,
             'is_creator'                 => $user->user_id == $event->event_creator_id,
             'event_id'                   => $event->event_id,
-            'participant_status_id'      => ParticipantStatus::all()->random()->participant_status_id,
         ];
     }
 }

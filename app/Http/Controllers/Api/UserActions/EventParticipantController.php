@@ -23,36 +23,25 @@ class EventParticipantController extends Controller
         $event = Event::where('event_id', $eventId)->first();
 
         if (!$event)
-            return response()->json(['message' => 'Event not found'],404);
+            return response()->json(['message' => 'Event not found'], 404);
 
         $eventParticipant = new EventParticipant;
         $eventParticipant->event_id = $eventId;
         $eventParticipant->user_id = $user->user_id;
         $eventParticipant->is_creator = ($event->event_creator_id === $user->user_id);
-        $eventParticipant->participant_status_id = $request->participant_status_id;
 
         $eventParticipant->save();
-        return response()->json(['message' => 'Successfully joined event'],200);
+        return response()->json(['message' => 'Successfully joined event'], 200);
     }
 
-    public function changeParticipantStatus(Request $request)
+    public function leaveEvent(Request $request, $eventId)
     {
         $user = $request->user();
+        $eventParticipant = EventParticipant::where('user_id', $user->user_id)
+            ->where('event_id', $eventId)->firstOrFail();
+        $eventParticipant->delete();
 
-        $this->validate($request, ['event_id' => 'required', 'participant_status_id' => 'required']);
-
-        $eventId = $request['event_id'];
-        $newParticipantStatus = $request->participant_status_id;
-
-        $participant = $user->participants()->where('event_id', $eventId)->first();
-        $participant->participant_status_id = $newParticipantStatus;
-
-        return (new EventParticipantResource($participant))->response()->setStatusCode(200);
-    }
-
-    public function leaveEvent()
-    {
-
+        return response()->json(['message' => 'Successfully left event'], 200);
     }
 
 
@@ -83,10 +72,11 @@ class EventParticipantController extends Controller
         return ProfileResource::collection($users);
     }
 
-    public function softDeleteParticipant(Request $request, $participantId){
-        $participantId =  EventReview::findOrFail($participantId);
+    public function softDeleteParticipant(Request $request, $participantId)
+    {
+        $participantId = EventReview::findOrFail($participantId);
         $participantId->delete();
-        return response()->json(['message' => 'You have deactivated participant!'],200);
+        return response()->json(['message' => 'You have deactivated participant!'], 200);
     }
 
 

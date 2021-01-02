@@ -26,8 +26,9 @@ class CreateUsersTable extends Migration
             $table->decimal ('longitude',10,7)->nullable();
             $table->decimal  ('latitude',10,7)->nullable();
             $table->boolean ('is_admin');
+
             $table->boolean ('is_active');
-            //$table->string  ('api_token')->unique();
+
             $table->softDeletes();
 
             $table->rememberToken();

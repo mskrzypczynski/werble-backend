@@ -35,8 +35,6 @@ class EventFactory extends Factory
             'description'                   =>  $this->faker->text(),
             'datetime'                      =>  $this->faker->dateTime(),
             'is_active'                     =>  $this->faker->boolean(80),
-            'event_visibility_level_id'     =>  $this->faker->numberBetween(1,3),
-            'event_status_id'               =>  EventStatus::all()->random()->event_status_id,
             'event_creator_id'              =>  User::all()->random()->user_id,
             'event_type_id'                 =>  EventType::all()->random()->event_type_id,
         ];

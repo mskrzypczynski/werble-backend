@@ -18,7 +18,6 @@ class CreateEventParticipantsTable extends Migration
             $table->boolean     ('is_creator');
             $table->bigInteger  ('user_id')->unsigned();
             $table->bigInteger  ('event_id')->unsigned();
-            $table->bigInteger  ('participant_status_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
 
@@ -26,7 +25,6 @@ class CreateEventParticipantsTable extends Migration
                 ->on('event_participants')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('event_id')->references('event_id')->on('events')
                 ->on('event_participants')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('participant_status_id')->references('participant_status_id')->on('participant_statuses');
         });
     }
 

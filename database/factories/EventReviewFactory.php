@@ -28,9 +28,6 @@ class EventReviewFactory extends Factory
             'is_active'             =>  $this->faker->boolean(90),
             'event_participant_id'  =>  $this->faker->numberBetween(1,10),
             'event_id'              =>  Event::all()->random()->event_id,
-
-
-
         ];
     }
 }
