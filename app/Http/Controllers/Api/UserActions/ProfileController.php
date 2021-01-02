@@ -64,5 +64,11 @@ class ProfileController extends Controller
         return (new EventResource($user))->response()->setStatusCode(200);
     }
 
+    public function softDeleteUser(Request $request, $userId){
+        $user =  User::findOrFail($userId);
+        $user->delete();
+        return response()->json(['message' => 'You have deactivated your account!'],200);
+    }
+
 
 }

@@ -50,21 +50,8 @@ class EventReviewController extends Controller
     public function getEventReviews(Request $request, $eventId)
     {
         $event = Event::where('event_id', $eventId)->first();
-        //$answers = [];
 
-        $reviews = $event->reviews()->get();
-        $reviews = collect($reviews)->map(function ($review){
-            $review['login'] = $review->participant()->first()->user()->first()->login;
-            //$review['login'] = $review->user()->login;
-            //$review['login'] = $review->user()->login;
-            return $review;
-        });
-        /*foreach ($reviews as $review) {
-            array_push($answers, $review->participant()->first());
-        }*/
-
-        //return $reviews;
-        return EventReviewResource::collection($reviews);
+        return EventReviewResource::collection($event->reviews()->get());
     }
 
     public function editReview(Request $request, $eventId){

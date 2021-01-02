@@ -32,10 +32,10 @@ class CreateEventsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('event_visibility_level_id')->references('user_id')->on('users');
-            $table->foreign('event_status_id')->references('event_status_id')->on('event_statuses');
-            $table->foreign('event_creator_id')->references('user_id')->on('users');
-            $table->foreign('event_type_id')->references('event_type_id')->on('event_types');
+            $table->foreign('event_visibility_level_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('event_status_id')->references('event_status_id')->on('event_statuses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('event_creator_id')->references('user_id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('event_type_id')->references('event_type_id')->on('event_types')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }

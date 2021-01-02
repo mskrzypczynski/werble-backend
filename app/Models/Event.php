@@ -109,7 +109,9 @@ class Event extends Model
 
     public function reviews()
     {
-        return $this->hasMany('App\Models\EventReview', 'event_id', 'event_id');
+        //return $this->hasMany('App\Models\EventReview', 'event_id', 'event_id');
+        return $this->hasManyThrough(EventReview::class,EventParticipant::class,
+            'event_id', 'event_participant_id');
     }
 
     /* One-to-One Relationships */

@@ -78,10 +78,10 @@ class EventReview extends Model
         ];
 
     /* One-to-One Relationships */
-    public function event()
+    /*public function event()
     {
         return $this->hasOne('App\Models\Event', 'event_id', 'event_id');
-    }
+    }*/
 
     public function participant()
     {
