@@ -70,10 +70,6 @@ class EventParticipant extends Model
         return $this->belongsTo('App\Models\Event', 'event_id', 'event_id');
     }
 
-    public function status(){
-        return $this->belongsTo('App\Models\ParticipantStatus','participant_status_id','participant_status_id');
-    }
-
     public function user(){
         return $this->belongsTo('App\Models\User','user_id','user_id');
     }

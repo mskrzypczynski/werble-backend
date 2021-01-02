@@ -44,7 +44,8 @@ class EventController extends Controller
                 'description' => 'nullable',
                 'datetime' => 'required',
                 'longitude' => 'nullable',
-                'latitude' => 'nullable'
+                'latitude' => 'nullable',
+                'event_type_id' => 'required',
         ];
 
         $toUpdate = [];

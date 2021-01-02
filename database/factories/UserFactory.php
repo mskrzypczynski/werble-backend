@@ -30,12 +30,11 @@ class UserFactory extends Factory
             'first_name'                =>  $this->faker->firstName,
             'last_name'                 =>  $this->faker->lastName,
             'birth_date'                =>  $this->faker->date(),
-            'description'          =>  $this->faker->text(),
+            'description'               =>  $this->faker->text(),
             'longitude'                 =>  $this->faker->longitude,
             'latitude'                  =>  $this->faker->latitude,
             'is_admin'                  =>  false,
-            'is_active'            =>  $this->faker->boolean(90),
-            //'api_token'                 =>  Str::random(80),
+            'is_active'                 =>  $this->faker->boolean(90),
             'remember_token'            =>  Str::random(10),
         ];
     }

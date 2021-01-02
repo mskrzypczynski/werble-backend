@@ -23,16 +23,6 @@ class NoRelationshipSeeder extends Seeder
         // Create users
         User::factory(10)->create();
 
-        // Create Friendship statuses
-        FriendshipStatus::factory(4)->create();
-
-        // Create Event interest levels
-        ParticipantStatus::factory(4)->create();
-
-        //Create Event types
         EventType::factory(10)->create();
-
-        // Create Event statuses
-        EventStatus::factory(3)->create();
     }
 }

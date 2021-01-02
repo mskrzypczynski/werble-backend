@@ -160,15 +160,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\EventParticipant','user_id','user_id');
     }
 
-    public function havingFriends(){
-        return $this->hasMany('App\Models\UserFriend','friend_id','user_id');
-    }
-
-    public function beingFriends(){
-        return $this->hasMany('App\Models\UserFriend','user_id','user_id');
-    }
-
-    public function AauthAcessToken(){
+    public function OauthAcessToken(){
         return $this->hasMany('\App\OauthAccessToken');
     }
 

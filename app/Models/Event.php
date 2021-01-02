@@ -87,8 +87,6 @@ class Event extends Model
      */
     protected $attributes = [
         'is_active' => true,
-        'event_visibility_level_id' =>1,
-        'event_status_id' => 1,
         'event_creator_id' => 1,
         'event_type_id' => 1,
     ];
@@ -126,9 +124,6 @@ class Event extends Model
         return $this->belongsTo('App\Models\User','user_id','event_creator_id');
     }
 
-    public function status(){
-        return $this->belongsTo('App\Models\EventStatus','event_status_id','event_status_id');
-    }
 
     public function type(){
         return $this->belongsTo('App\Models\EventType','event_type_id','event_type_id');
