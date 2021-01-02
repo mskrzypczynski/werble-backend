@@ -49,28 +49,31 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
 
     Route::group(['prefix' => 'user'], function () {
         Route::get('profile', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'getAuthenticatedUserProfile']);
+        Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
+        Route::delete('profile/deactivate')
 
         Route::get('events', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getUserEvents']);
         Route::get('events/local', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getLocalEvents']);
         Route::get('event/{id}', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getSingleEvent']);
+
         Route::get('events/{id}/participants', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'getEventParticipantsProfiles']);
         Route::post('event/{id}/join', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'joinEvent']);
 
+        Route::get('participant', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'getUserParticipatingEvents']);
         Route::post('participant/change', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'changeParticipantStatus']);
+
         Route::get('events/{id}/reviews', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getEventReviews']);
         Route::get('events/{id}/review', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getSingleReview']);
-
         Route::post('events/review/create', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'createReview']);
         Route::put('events/{id}/review/edit', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'editReview']);
+
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
         Route::put('events/{id}/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
         //Route::put('events/{id}/edit/marker', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEventMarker']);
 
-        Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
 
         Route::put('position', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'updateUserPosition']);
         //Route::get('events/{id}');
-        Route::get('participant', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'getUserParticipatingEvents']);
         //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);
     });
 
