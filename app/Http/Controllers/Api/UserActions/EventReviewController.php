@@ -67,13 +67,17 @@ class EventReviewController extends Controller
         return EventReviewResource::collection($reviews);
     }
 
-    public function editReview(Request $request, $eventId, $participantId){
+    public function editReview(Request $request, $eventId){
         $user = $request->user();
         $event = Event::where('event_id',$eventId)->firstOrFail();
         $event->event_id = $eventId;
+            //USER->PARTICIPANTS->WHERE
+        //$participant = EventReview::where('event_participant_id',$participantId)->firstOrFail();
+        //$participant->event_participant_id = $participantId;
 
-        $participant = EventReview::where('event_participant_id',$participantId)->firstOrFail();
-        $participant->event_participant_id = $participantId;
+        $participant = $user->participants()->where('event_id',$eventId)->firstOrFail();
+
+        $review = $participant->review()->firstOrFail();
 
         if(!$user->user_id === $event->event_creator_id )
             return response()->json(403,'You dont have right to do this');
@@ -92,15 +96,17 @@ class EventReviewController extends Controller
         $this->validate($request,$toUpdate);
 
         // update only sent attr
-        foreach ($toUpdate as $key => $value) $participant[$key] = $request[$key];
+        foreach ($toUpdate as $key => $value) $review[$key] = $request[$key];
 
-        $participant->save();
-        return (new EventReviewResource($participant))->response()->setStatusCode(200);
+        $review->save();
+        return (new EventReviewResource($review))->response()->setStatusCode(200);
     }
 
-    public function getSingleReview($eventId, $participantId)
+    public function getSingleReview(Request $request,$eventId)
     {
-         $review = EventReview::where('event_participant_id',$participantId)->where('event_id',$eventId)->firstOrFail();
+        $user = $request->user();
+        $participant = EventParticipant::where('user_id',$user->user_id)->where('event_id',$eventId)->firstOrFail();
+        $review = $participant->review()->first();
          return  $review;
     }
 }
