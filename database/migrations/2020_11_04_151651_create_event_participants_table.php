@@ -22,9 +22,9 @@ class CreateEventParticipantsTable extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('user_id')->on('users')
-                ->on('event_participants')->onDelete('cascade')->onUpdate('cascade');
+                ->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('event_id')->references('event_id')->on('events')
-                ->on('event_participants')->onDelete('cascade')->onUpdate('cascade');
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

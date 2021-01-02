@@ -33,7 +33,8 @@ class CreateEventsTable extends Migration
             $table->foreign('event_creator_id')->references('user_id')
                 ->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreign('event_type_id')->references('event_type_id');
+            $table->foreign('event_type_id')->references('event_type_id')
+                ->on('event_types');
 
         });
     }
