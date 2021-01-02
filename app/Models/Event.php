@@ -114,6 +114,13 @@ class Event extends Model
             'event_id', 'event_participant_id');
     }
 
+    public function users()
+    {
+        //return $this->hasMany('App\Models\EventReview', 'event_id', 'event_id');
+        return $this->hasManyThrough(User::class,EventParticipant::class,
+            'event_id', 'event_participant_id');
+    }
+
     /* One-to-One Relationships */
     public function creator(){
         return $this->belongsTo('App\Models\User','user_id','event_creator_id');

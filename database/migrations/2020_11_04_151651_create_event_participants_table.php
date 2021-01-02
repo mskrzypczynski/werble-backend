@@ -22,8 +22,10 @@ class CreateEventParticipantsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('event_id')->references('event_id')->on('events');
+            $table->foreign('user_id')->references('user_id')->on('users')
+                ->on('event_participants')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('event_id')->references('event_id')->on('events')
+                ->on('event_participants')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('participant_status_id')->references('participant_status_id')->on('participant_statuses');
         });
     }

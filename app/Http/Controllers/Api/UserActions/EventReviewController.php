@@ -96,4 +96,10 @@ class EventReviewController extends Controller
         $review = $participant->review()->first();
          return  $review;
     }
+
+    public function softDeleteReview(Request $request, $reviewId){
+        $reviewId =  EventReview::findOrFail($reviewId);
+        $reviewId->delete();
+        return response()->json(['message' => 'You have deactivated your review!'],200);
+    }
 }

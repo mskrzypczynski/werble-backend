@@ -10,6 +10,7 @@ use App\Http\Resources\ProfileResource;
 use App\Models\Event;
 use App\Models\EventParticipant;
 
+use App\Models\EventReview;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -80,6 +81,12 @@ class EventParticipantController extends Controller
         }
 
         return ProfileResource::collection($users);
+    }
+
+    public function softDeleteParticipant(Request $request, $participantId){
+        $participantId =  EventReview::findOrFail($participantId);
+        $participantId->delete();
+        return response()->json(['message' => 'You have deactivated participant!'],200);
     }
 
 
