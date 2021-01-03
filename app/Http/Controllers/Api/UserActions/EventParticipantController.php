@@ -61,15 +61,19 @@ class EventParticipantController extends Controller
     {
         //
         $event = Event::where('event_id', $eventId)->first();
-        $users = [];
+        //$users = [];
 
-        $participants = $event->participants()->get();
+        $participants = $event->participants()->get()->map(function ($participant){
+            $participant['login'] = $participant->user()->first()->login;
 
-        foreach ($participants as $participant) {
+            return $participant;
+        });
+
+        /*foreach ($participants as $participant) {
             array_push($users, $participant->user()->first());
-        }
+        }*/
 
-        return ProfileResource::collection($users);
+        return JsonResource::collection($participants);
     }
 
     public function softDeleteParticipant(Request $request, $participantId)

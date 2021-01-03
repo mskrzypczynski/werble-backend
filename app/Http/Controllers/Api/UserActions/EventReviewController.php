@@ -48,8 +48,13 @@ class EventReviewController extends Controller
 
     public function getEventReviews(Request $request, $eventId)
     {
+
         $event = Event::where('event_id', $eventId)->first();
-        return EventReviewResource::collection($event->reviews()->get());
+        $reviews = $event->reviews()->get()->map(function ($review){
+           $review['login'] = $review->participant()->first()->user()->first()->login;
+           return $review;
+        });
+        return EventReviewResource::collection($reviews);
     }
 
     public function editReview(Request $request, $eventId){
@@ -92,6 +97,8 @@ class EventReviewController extends Controller
         $user = $request->user();
         $participant = EventParticipant::where('user_id',$user->user_id)->where('event_id',$eventId)->firstOrFail();
         $review = $participant->review()->first();
+
+        $review['login'] = $participant->user()->first()->login;
          return  $review;
     }
 
