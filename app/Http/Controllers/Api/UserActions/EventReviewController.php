@@ -36,7 +36,6 @@ class EventReviewController extends Controller
         $review = new EventReview;
 
         $review->event_participant_id = $participantId;
-        $review->event_id =$request->event_id;
         $review->content = $request['content'];
         $review->rating = $request->rating;
         $review->save();
@@ -50,7 +49,6 @@ class EventReviewController extends Controller
     public function getEventReviews(Request $request, $eventId)
     {
         $event = Event::where('event_id', $eventId)->first();
-
         return EventReviewResource::collection($event->reviews()->get());
     }
 
@@ -97,9 +95,9 @@ class EventReviewController extends Controller
          return  $review;
     }
 
-    public function softDeleteReview(Request $request, $reviewId){
-        $reviewId =  EventReview::findOrFail($reviewId);
-        $reviewId->delete();
+    public function softDeleteReview(Request $request, $participantId){
+        $participantId = EventReview::where('event_participant_id',$participantId)->firstOrFail();
+        $participantId->delete();
         return response()->json(['message' => 'You have deactivated your review!'],200);
     }
 }

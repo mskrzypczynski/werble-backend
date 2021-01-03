@@ -50,7 +50,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
     Route::group(['prefix' => 'user'], function () {
         Route::get('profile', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'getAuthenticatedUserProfile']);
         Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
-        Route::delete('profile/deactivate')
+        Route::delete('profile/deactivate',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'deactivateAuthenticatedUserProfile']);
 
         Route::get('events', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getUserEvents']);
         Route::get('events/local', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getLocalEvents']);
@@ -66,6 +66,8 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::get('events/{id}/review', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getSingleReview']);
         Route::post('events/review/create', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'createReview']);
         Route::put('events/{id}/review/edit', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'editReview']);
+        Route::delete('events/review/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'softDeleteReview']);
+
 
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
         Route::put('events/{id}/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
