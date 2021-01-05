@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
+
 
 /**
  * App\Models\Event
@@ -66,7 +68,7 @@ class Event extends Model
      *  Model uses SoftDeletes to not delete records from DB.
      *  Also while deleting we switch entity's is_active attribute to false.
      */
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes,CascadeSoftDeletes;
 
     /**
      * The table associated with Event model
@@ -97,6 +99,9 @@ class Event extends Model
         'description',
         'datetime'
     ];
+
+    protected  $cascadeDeletes = ['participants','reviews'];
+                                    //'creator'];//,'type'];
 
 
     /* One-to-Many Relationships */

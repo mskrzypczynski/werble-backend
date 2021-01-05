@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\EventResource;
 use App\Http\Resources\EventResourceCollection;
 use App\Models\Event;
+use App\Models\EventParticipant;
 use App\Models\EventReview;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,8 +62,17 @@ class EventController extends Controller
         $event = new Event;
         foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
         $event ->event_creator_id = $user->user_id;
-        $event->save();
+        //$eventParticipant = new EventParticipant;
+        //$eventParticipant->user_id = $user->user_id;
 
+        $event->save();
+        $event->refresh();
+        $eventParticipant = new EventParticipant;
+        $eventParticipant->user_id = $user->user_id;
+        $eventParticipant->event_id = $event->event_id;
+        $eventParticipant->is_creator = 1;
+
+        $eventParticipant->save();
         $response = ['message' => 'You have created event!'];
         return response()->json($response,200);
     }

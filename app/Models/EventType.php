@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
+
 
 /**
  * App\Models\EventType
@@ -31,7 +33,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class EventType extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory,SoftDeletes;//,CascadeSoftDeletes;
+    //protected  $cascadeDeletes = ['events'];
 
     /**
      * The table associated with EventType model
