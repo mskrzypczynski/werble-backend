@@ -9,6 +9,7 @@ use App\Models\EventType;
 use App\Models\EventStatus;
 use App\Models\User;
 
+use Doctrine\DBAL\Schema\Sequence;
 use Illuminate\Database\Seeder;
 
 class NoRelationshipSeeder extends Seeder
@@ -23,6 +24,24 @@ class NoRelationshipSeeder extends Seeder
         // Create users
         User::factory(10)->create();
 
-        EventType::factory(10)->create();
+        $eventTypeNames =[
+                'Gym',
+                'Running',
+                'Birthday',
+                'Party',
+                'Swimming',
+                'Concert',
+                'Festival',
+                'Biking',
+                'Board games',
+                'Walk',
+                ];
+
+
+        foreach($eventTypeNames as $eventType){
+            EventType::factory()->create(['event_type_name' => $eventType]);
+    }
+
+
     }
 }

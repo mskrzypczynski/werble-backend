@@ -74,6 +74,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::delete('events/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventController::class, 'softDeleteEvent']);
         //Route::put('events/{id}/edit/marker', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEventMarker']);
 
+        Route::get('types',[\App\Http\Controllers\Api\UserActions\EventTypeController::class,'index']);
 
         Route::put('position', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'updateUserPosition']);
         //Route::get('events/{id}');
@@ -91,9 +92,6 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
 
         });
         // types and statuses
-        Route::apiResource('event_statuses', 'Api\EventStatusController');
-        Route::apiResource('event_types', 'Api\EventTypeController');
-        Route::apiResource('friendship_statuses', 'Api\FriendshipStatusController');
-        Route::apiResource('participant_statuses', 'Api\ParticipantStatusController');
+
     });
 });

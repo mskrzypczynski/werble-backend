@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
+
 
 /**
  * App\Models\EventParticipant
@@ -39,7 +41,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class EventParticipant extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes,CascadeSoftDeletes;
 
     /**
      * The table associated with EventParticipant model
@@ -58,6 +60,8 @@ class EventParticipant extends Model
      * @var bool
      */
     public $incrementing = true;
+
+    protected  $cascadeDeletes = ['review'];//,'event','user'];
 
     /* One-to-One Relationships */
     public function review()

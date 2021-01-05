@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\event;
-use App\Models\EventStatus;
 use App\Models\EventType;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -40,5 +39,3 @@ class EventFactory extends Factory
         ];
     }
 }
-
-

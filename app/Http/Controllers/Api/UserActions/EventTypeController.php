@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\UserActions;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventTypeResource;
@@ -16,12 +16,14 @@ class EventTypeController extends Controller
      */
     public function index()
     {
-        return (new EventTypeResource(EventType::all()));
+        $eventTypes = EventType::all();
+        return EventTypeResource::collection($eventTypes);
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -65,14 +67,9 @@ class EventTypeController extends Controller
         return (new EventTypeResource($eventType));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        EventType::findOrFail($id)->delete();
+        return response()->json(['message' => 'Deleted event type'],200);
     }
 }

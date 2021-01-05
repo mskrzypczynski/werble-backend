@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -75,7 +76,7 @@ class User extends Authenticatable
      *  Also while deleting we switch entity's is_active attribute to false.
      *  User must verify email
      */
-    use HasFactory, Notifiable, HasApiTokens, SoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes,CascadeSoftDeletes;
 
     /**
      * The table associated with User model
@@ -151,6 +152,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected  $cascadeDeletes = ['events','participants'];
+
+
     /* One-to-Many Relationships */
     public function events(){
         return $this->hasMany('App\Models\Event','event_creator_id','user_id');
@@ -160,7 +164,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\EventParticipant','user_id','user_id');
     }
 
-    public function OauthAcessToken(){
+    public function OauthAccessToken(){
         return $this->hasMany('\App\OauthAccessToken');
     }
 
