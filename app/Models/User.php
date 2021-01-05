@@ -156,16 +156,22 @@ class User extends Authenticatable
 
 
     /* One-to-Many Relationships */
+
+    //return events created by the user
     public function events(){
         return $this->hasMany('App\Models\Event','event_creator_id','user_id');
     }
 
+    // returns event_participants models
     public function participants(){
         return $this->hasMany('App\Models\EventParticipant','user_id','user_id');
     }
 
-    public function OauthAccessToken(){
-        return $this->hasMany('\App\OauthAccessToken');
+    // Return events the user is participating
+    public function eventsParticipating(){
+        return $this->participants()->get()->map(function ($participant){
+            return $participant->event()->first();
+        });
     }
 
     //checks if user's is_admin is set

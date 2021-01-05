@@ -48,13 +48,8 @@ class EventParticipantController extends Controller
     public function getUserParticipatingEvents(Request $request)
     {
         $user = $request->user();
-        $events = [];
-        $participants = $user->participants()->get();
-        foreach ($participants as $participant) {
-            array_push($events, $participant->event()->first());
-        }
-
-        return EventResource::collection($events);
+        $eventsParticipating = $user->eventsParticipating();
+        return EventResource::collection($eventsParticipating);
     }
 
     public function getEventParticipantsProfiles(Request $request, $eventId)
@@ -65,7 +60,6 @@ class EventParticipantController extends Controller
 
         $participants = $event->participants()->get()->map(function ($participant){
             $participant['login'] = $participant->user()->first()->login;
-
             return $participant;
         });
 

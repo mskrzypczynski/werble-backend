@@ -103,7 +103,6 @@ class Event extends Model
     protected  $cascadeDeletes = ['participants','reviews'];
                                     //'creator'];//,'type'];
 
-
     /* One-to-Many Relationships */
     public function participants()
     {

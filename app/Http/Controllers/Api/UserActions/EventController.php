@@ -140,6 +140,12 @@ class EventController extends Controller
         $event->save();
         return (new EventResource($event))->response()->setStatusCode(200);
     }*/
+    public function getSingleEvent(Event $event, $id)
+    {
+        $event = Event::findOrFail($id);
+        //return new EventResource($event);
+        return  $event;
+    }
 
     public function deleteEvent(Request $request){
         $user = $request->user();
@@ -153,40 +159,55 @@ class EventController extends Controller
         return response()->json(200,'Event deleted');
     }
 
-    public function getUserEvents(Request $request){
-        $user = $request->user();
-        $events = $user->events()->where('is_active',1)->get();
-        return EventResource::collection($events);
-    }
-
-    public function getSingleEvent(Event $event, $id)
+    public function getParticipatingEvents(Request $request)
     {
-        $event = Event::findOrFail($id);
-        //return new EventResource($event);
-        return  $event;
-    }
-
-    public function getLocalEvents(Request $request){
         $user = $request->user();
         $userLat = $user->latitude;
         $userLng = $user->longitude;
 
-        $events = Event::all();
-        //$events = $user->events()->where()
-        if ($request->has('distance')){
-            $distance = $request->distance;
-        }else {
-            $distance = 10; // kilometers
-        }
-
-        $markers = collect($events)->map(function($event) use ($userLat,$userLng) {
+        $participatingEvents = $user->eventsParticipating();
+        $participatingEvents = collect($participatingEvents)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
-            $event['distance'] = sprintf("%0.3f",$distance);
-
+            $event['distance'] = sprintf("%0.3f", $distance);
             return $event;
         });
-        //dd($markers);
-        $events = $markers->where('distance','<', $distance);
+
+        return EventResource::collection($participatingEvents);
+    }
+
+    public function getOwnedEvents(Request $request)
+    {
+        $user = $request->user();
+        $userLat = $user->latitude;
+        $userLng = $user->longitude;
+
+        $ownedEvents = $user->events();
+        $ownedEvents = collect($ownedEvents)->map(function ($event) use ($userLat, $userLng) {
+            $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+            $event['distance'] = sprintf("%0.3f", $distance);
+            return $event;
+        });
+
+        return EventResource::collection($ownedEvents);
+    }
+
+
+    public function getLocalEvents(Request $request){
+        $defaultDistance = 10;
+
+        $user = $request->user();
+        $userLat = $user->latitude;
+        $userLng = $user->longitude;
+        $distance = $request->has('distance') ? $request->distance : $defaultDistance;
+
+        $events = Event::all();
+        $events = collect($events)->map(function($event) use ($userLat,$userLng) {
+            $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+            $event['distance'] = sprintf("%0.3f",$distance);
+            return $event;
+        });
+
+        $events = $events->where('distance','<', $distance);
         return EventResource::collection($events);
     }
 
