@@ -12,3 +12,9 @@ npm-debug.log
 yarn-error.log
 .idea
 yarn.lock
+composer.lock
+.idea/modules.xml
+.idea/vcs.xml
+.idea/werble.iml
+composer.json
+composer.lock
