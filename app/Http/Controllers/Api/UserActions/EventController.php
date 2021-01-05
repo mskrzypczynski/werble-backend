@@ -46,6 +46,9 @@ class EventController extends Controller
                 'longitude' => 'nullable',
                 'latitude' => 'nullable',
                 'event_type_id' => 'required',
+                'zip_code' => 'nullable',
+                'street_name' => 'nullable',
+                'house_number' => 'nullable'
         ];
 
         $toUpdate = [];
@@ -81,6 +84,9 @@ class EventController extends Controller
             'event_type_id' => 'required',
             'longitude' => 'nullable',
             'latitude' => 'nullable',
+            'zip_code' => 'nullable',
+            'street_name' => 'nullable',
+            'house_number' => 'nullable'
         ];
         $toUpdate = [];
 
@@ -177,6 +183,12 @@ class EventController extends Controller
     public function getAllEvents(Request $request){
         $events = Event::all();
         return EventResource::collection($events);
+    }
+
+    public function softDeleteEvent(Request $request, $eventId){
+        $eventId = Event::where('event_id',$eventId)->firstOrFail();
+        $eventId->delete();
+        return response()->json(['message' => 'You have deactivated your event!'],200);
     }
 
     /*public function createReview(Request $request){

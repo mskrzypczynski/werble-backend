@@ -2,10 +2,10 @@
 
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\UserActions\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +71,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
 
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
         Route::put('events/{id}/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
+        Route::delete('events/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventController::class, 'softDeleteEvent']);
         //Route::put('events/{id}/edit/marker', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEventMarker']);
 
 
