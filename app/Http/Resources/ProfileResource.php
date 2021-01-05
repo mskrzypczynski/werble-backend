@@ -21,7 +21,7 @@ class ProfileResource extends JsonResource
             'email' => $this->email,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'birth_date' => $this->birh_date,
+            'birth_date' => $this->birth_date,
             'description' => $this->description,
             'is_admin' => $this->is_admin
         ];
