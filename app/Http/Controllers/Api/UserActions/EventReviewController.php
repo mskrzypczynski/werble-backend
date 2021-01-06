@@ -66,10 +66,6 @@ class EventReviewController extends Controller
     public function editReview(Request $request, $eventId){
         $user = $request->user();
         $event = Event::where('event_id',$eventId)->firstOrFail();
-        $event->event_id = $eventId;
-            //USER->PARTICIPANTS->WHERE
-        //$participant = EventReview::where('event_participant_id',$participantId)->firstOrFail();
-        //$participant->event_participant_id = $participantId;
 
         $participant = $user->participants()->where('event_id',$eventId)->firstOrFail();
 

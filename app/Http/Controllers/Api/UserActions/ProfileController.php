@@ -29,13 +29,10 @@ class ProfileController extends Controller
     public function getAuthenticatedUserProfile(Request $request){
         $user = $request->user();
         return (new ProfileResource($user));
-        //return UserResource::collection($user);
-
     }
 
     public function getUserProfile(Request $request, $id){
         $user = User::findOrFail($id);
-        //return UserResource::collection($user);
         return (new ProfileResource($user));
     }
 

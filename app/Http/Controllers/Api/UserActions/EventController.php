@@ -14,7 +14,8 @@ use Illuminate\Validation\ValidationException;
 
 class EventController extends Controller
 {
-    private function calculateDistanceBetweenTwoAddresses($lat1, $lng1, $lat2, $lng2){
+    private function calculateDistanceBetweenTwoAddresses($lat1, $lng1, $lat2, $lng2)
+    {
         $lat1 = deg2rad($lat1);
         $lng1 = deg2rad($lng1);
 
@@ -24,49 +25,49 @@ class EventController extends Controller
         $delta_lat = $lat2 - $lat1;
         $delta_lng = $lng2 - $lng1;
 
-        $hav_lat = (sin($delta_lat / 2))**2;
-        $hav_lng = (sin($delta_lng / 2))**2;
+        $hav_lat = (sin($delta_lat / 2)) ** 2;
+        $hav_lng = (sin($delta_lng / 2)) ** 2;
 
         $distance = 2 * asin(sqrt($hav_lat + cos($lat1) * cos($lat2) * $hav_lng));
 
-        $distance = 6371*$distance;
+        $distance = 6371 * $distance;
         // If you want calculate the distance in miles instead of kilometers, replace 6371 with 3959.
 
         return $distance;
     }
 
 
-    public function createEvent(Request $request){
+    public function createEvent(Request $request)
+    {
         $user = $request->user();
 
         $toCheck = [
-                'name' => 'required',
-                'location' => 'required',
-                'description' => 'nullable',
-                'datetime' => 'required',
-                'longitude' => 'nullable',
-                'latitude' => 'nullable',
-                'event_type_id' => 'required',
-                'zip_code' => 'nullable',
-                'street_name' => 'nullable',
-                'house_number' => 'nullable'
+            'name' => 'required',
+            'location' => 'required',
+            'description' => 'nullable',
+            'datetime' => 'required',
+            'longitude' => 'nullable',
+            'latitude' => 'nullable',
+            'event_type_id' => 'required',
+            'zip_code' => 'nullable',
+            'street_name' => 'nullable',
+            'house_number' => 'nullable'
         ];
 
         $toUpdate = [];
 
-        foreach ($toCheck as $key => $value)  if ($request["$key"]) $toUpdate[$key] = $value;
+        foreach ($toCheck as $key => $value) if ($request["$key"]) $toUpdate[$key] = $value;
         // validate sent data
-        $this->validate($request,$toUpdate);
+        $this->validate($request, $toUpdate);
 
         // update only sent attr
         $event = new Event;
         foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
-        $event ->event_creator_id = $user->user_id;
-        //$eventParticipant = new EventParticipant;
-        //$eventParticipant->user_id = $user->user_id;
 
+        $event->event_creator_id = $user->user_id;
         $event->save();
         $event->refresh();
+
         $eventParticipant = new EventParticipant;
         $eventParticipant->user_id = $user->user_id;
         $eventParticipant->event_id = $event->event_id;
@@ -74,16 +75,17 @@ class EventController extends Controller
 
         $eventParticipant->save();
         $response = ['message' => 'You have created event!'];
-        return response()->json($response,200);
+
+        return response()->json($response, 200);
     }
 
-    public function editEvent(Request $request, $eventId){
+    public function editEvent(Request $request, $eventId)
+    {
         $user = $request->user();
-        $event = Event::where('event_id',$eventId)->firstOrFail();
-        $event->event_id = $eventId;
+        $event = Event::where('event_id', $eventId)->firstOrFail();
 
-        if(!$user->user_id === $event->event_creator_id )
-            return response()->json(403,'You dont have right to do this');
+        if (!$user->user_id === $event->event_creator_id)
+            return response()->json(403, 'You dont have right to do this');
 
         // model attrs to change sent in request, check if they exist
         $toCheck = [
@@ -104,7 +106,7 @@ class EventController extends Controller
         foreach ($toCheck as $key => $value) if ($request->has($key)) $toUpdate[$key] = $value;
 
         // validate sent data
-        $this->validate($request,$toUpdate);
+        $this->validate($request, $toUpdate);
 
         // update only sent attr
         foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
@@ -113,50 +115,24 @@ class EventController extends Controller
         return (new EventResource($event))->response()->setStatusCode(200);
     }
 
-    /*public function editEventMarker(Request $request, $eventId){
-        $user = $request->user();
-        $event = Event::where('event_id',$eventId)->firstOrFail();
-        $event->event_id = $eventId;
-
-        if(!$user->user_id === $event->event_creator_id )
-            return response()->json(403,'You dont have right to do this');
-
-        // model attrs to change sent in request, check if they exist
-        $toCheck = [
-            'longitude' => 'required',
-            'latitude' => 'required',
-        ];
-        $toUpdate = [];
-
-
-        foreach ($toCheck as $key => $value) if ($request->has($key)) $toUpdate[$key] = $value;
-
-        // validate sent data
-        $this->validate($request,$toUpdate);
-
-        // update only sent attr
-        foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
-
-        $event->save();
-        return (new EventResource($event))->response()->setStatusCode(200);
-    }*/
     public function getSingleEvent(Event $event, $id)
     {
         $event = Event::findOrFail($id);
         //return new EventResource($event);
-        return  $event;
+        return $event;
     }
 
-    public function deleteEvent(Request $request){
+    public function deleteEvent(Request $request)
+    {
         $user = $request->user();
-        $event = Event::where('event_id',$request->event_id)->firstOrFail();
+        $event = Event::where('event_id', $request->event_id)->firstOrFail();
 
-        if(!$user->user_id === $event->event_creator_id )
-            return response()->json(403,'You dont have rights to do this');
+        if (!$user->user_id === $event->event_creator_id)
+            return response()->json(403, 'You dont have rights to do this');
 
-        $event -> delete();
+        $event->delete();
 
-        return response()->json(200,'Event deleted');
+        return response()->json(200, 'Event deleted');
     }
 
     public function getParticipatingEvents(Request $request)
@@ -192,7 +168,8 @@ class EventController extends Controller
     }
 
 
-    public function getLocalEvents(Request $request){
+    public function getLocalEvents(Request $request)
+    {
         $defaultDistance = 10;
 
         $user = $request->user();
@@ -201,51 +178,26 @@ class EventController extends Controller
         $distance = $request->has('distance') ? $request->distance : $defaultDistance;
 
         $events = Event::all();
-        $events = collect($events)->map(function($event) use ($userLat,$userLng) {
+        $events = collect($events)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
-            $event['distance'] = sprintf("%0.3f",$distance);
+            $event['distance'] = sprintf("%0.3f", $distance);
             return $event;
         });
 
-        $events = $events->where('distance','<', $distance);
+        $events = $events->where('distance', '<', $distance);
         return EventResource::collection($events);
     }
 
-    public function getAllEvents(Request $request){
+    public function getAllEvents(Request $request)
+    {
         $events = Event::all();
         return EventResource::collection($events);
     }
 
-    public function softDeleteEvent(Request $request, $eventId){
-        $eventId = Event::where('event_id',$eventId)->firstOrFail();
+    public function softDeleteEvent(Request $request, $eventId)
+    {
+        $eventId = Event::where('event_id', $eventId)->firstOrFail();
         $eventId->delete();
-        return response()->json(['message' => 'You have deactivated your event!'],200);
+        return response()->json(['message' => 'You have deactivated your event!'], 200);
     }
-
-    /*public function createReview(Request $request){
-        $user = $request->user();
-        $event = $request->event();
-
-        $toCheck = [
-            'rating' => 'required',
-            'content' => 'required',
-        ];
-
-        $toCreate = [];
-
-        foreach ($toCheck as $key => $value)  if ($request["$key"]) $toCreate[$key] = $value;
-        // validate sent data
-        $this->validate($request,$toCreate);
-
-        // update only sent attr
-        $review = new EventReview();
-        foreach ($toCreate as $key => $value) $review[$key] = $request[$key];
-        $review ->event_participant_id = $user->user_id;
-        $event ->event_id = $event->event_id;
-        $review->save();
-
-        $response = ['message' => 'You have created review!'];
-        return response()->json($response,200);
-    }*/
-
 }
