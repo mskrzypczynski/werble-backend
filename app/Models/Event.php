@@ -123,6 +123,13 @@ class Event extends Model
             'event_id', 'event_participant_id');
     }
 
+    public function participantsWithLogin(){
+        return $this->participants()->get()->map(function ($participant){
+            $participant['login'] = $participant->user()->first()->login;
+            return $participant;
+        });
+    }
+
     /* One-to-One Relationships */
     public function creator(){
         return $this->belongsTo('App\Models\User','user_id','event_creator_id');

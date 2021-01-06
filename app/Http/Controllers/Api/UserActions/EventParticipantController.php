@@ -65,19 +65,8 @@ class EventParticipantController extends Controller
 
     public function getEventParticipantsProfiles(Request $request, $eventId)
     {
-        //
         $event = Event::where('event_id', $eventId)->first();
-        //$users = [];
-
-        $participants = $event->participants()->get()->map(function ($participant){
-            $participant['login'] = $participant->user()->first()->login;
-            return $participant;
-        });
-
-        /*foreach ($participants as $participant) {
-            array_push($users, $participant->user()->first());
-        }*/
-
+        $participants = $event->participantsWithLogin();
         return JsonResource::collection($participants);
     }
 
