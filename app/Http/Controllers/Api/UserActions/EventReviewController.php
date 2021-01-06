@@ -12,6 +12,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\EventReview;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,11 +22,9 @@ class EventReviewController extends Controller
         $user = $request->user();
         $userId = $user->user_id;
 
-
-        $participantId = EventParticipant::where('user_id', $userId)
-            ->where('event_id',$request->event_id)
-            ->firstOrFail()->event_participant_id;
-
+        $participant = EventParticipant::where('event_id',$request->event_id)
+            ->where('user_id',$userId)->firstOrFail();
+        $participantId = $participant->event_participant_id;
 
         $this->validate($request,
             [
@@ -33,7 +32,15 @@ class EventReviewController extends Controller
                 'content' => 'required',
                 'rating' => 'required',
             ]);
-        $review = new EventReview;
+
+        $review = EventReview::withTrashed()->where('event_participant_id',$participantId)->first();
+        if($review)
+        {
+            $review->restore();
+            $review->created_at = Carbon::now();
+        }
+        else
+            $review = new EventReview;
 
         $review->event_participant_id = $participantId;
         $review->content = $request['content'];
@@ -48,7 +55,6 @@ class EventReviewController extends Controller
 
     public function getEventReviews(Request $request, $eventId)
     {
-
         $event = Event::where('event_id', $eventId)->first();
         $reviews = $event->reviews()->get()->map(function ($review){
            $review['login'] = $review->participant()->first()->user()->first()->login;

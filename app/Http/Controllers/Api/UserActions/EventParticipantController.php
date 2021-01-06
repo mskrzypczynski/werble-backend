@@ -11,6 +11,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 
 use App\Models\EventReview;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,27 +20,37 @@ class EventParticipantController extends Controller
     public function joinEvent(Request $request, $eventId)
     {
         $user = $request->user();
-
         $event = Event::where('event_id', $eventId)->first();
 
         if (!$event)
             return response()->json(['message' => 'Event not found'], 404);
 
-        $eventParticipant = new EventParticipant;
-        $eventParticipant->event_id = $eventId;
-        $eventParticipant->user_id = $user->user_id;
-        $eventParticipant->is_creator = ($event->event_creator_id === $user->user_id);
+        $participant = EventParticipant::withTrashed()
+            ->where('user_id',$user->user_id)
+            ->where('event_id',$event->event_id)
+            ->first();
 
-        $eventParticipant->save();
+        if($participant)
+        {
+            $participant->restore();
+            $participant->created_at = Carbon::now();
+            return response()->json(['message' => 'Successfully joined event'], 200);
+        }
+
+        $participant = new EventParticipant;
+        $participant->event_id = $eventId;
+        $participant->user_id = $user->user_id;
+        $participant->is_creator = ($event->event_creator_id === $user->user_id);
+        $participant->save();
+
         return response()->json(['message' => 'Successfully joined event'], 200);
     }
 
     public function leaveEvent(Request $request, $eventId)
     {
         $user = $request->user();
-        $eventParticipant = EventParticipant::where('user_id', $user->user_id)
-            ->where('event_id', $eventId)->firstOrFail();
-        $eventParticipant->delete();
+        $participant = $user->participants()->where('event_id', $eventId)->firstOrFail();
+        $participant->delete();
 
         return response()->json(['message' => 'Successfully left event'], 200);
     }
