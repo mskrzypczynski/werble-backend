@@ -115,10 +115,16 @@ class EventController extends Controller
         return (new EventResource($event))->response()->setStatusCode(200);
     }
 
-    public function getSingleEvent(Event $event, $id)
+    public function getSingleEvent(Request $request, $id)
     {
+        $user = $request->user();
+        $userLat = $user->latitude;
+        $userLng = $user->longitude;
+
         $event = Event::findOrFail($id);
         //return new EventResource($event);
+        $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+        $event['distance'] = sprintf("%0.3f", $distance);
         return $event;
     }
 
