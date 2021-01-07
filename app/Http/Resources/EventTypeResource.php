@@ -14,6 +14,10 @@ class EventTypeResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+//        return parent::toArray($request);
+        return [
+            'event_type_id' => $this->event_type_id,
+            'event_type_name' => $this->event_type_name
+        ];
     }
 }

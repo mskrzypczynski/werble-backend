@@ -61,6 +61,8 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::delete('events/review/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'softDeleteReview']);
 
         Route::get('events/{id}', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getSingleEvent']);
+        Route::get('events/{id}/wrapped', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getEventWithParticipantsWithUserAndReview']);
+
         Route::put('events/{id}/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
         Route::delete('events/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventController::class, 'softDeleteEvent']);
         Route::get('events/{id}/participants', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'getEventParticipantsProfiles']);

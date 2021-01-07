@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\EventParticipant;
 use App\Models\EventReview;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -122,11 +123,33 @@ class EventController extends Controller
         $userLng = $user->longitude;
 
         $event = Event::findOrFail($id);
-        //return new EventResource($event);
+        //
         $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
         $event['distance'] = sprintf("%0.3f", $distance);
+
+        if($request->has('wrap')) return new EventResource($event);
         return $event;
     }
+
+    public function getEventWithParticipantsWithUserAndReview(Request $request, $id)
+    {
+        $user = $request->user();
+        $userLat = $user->latitude;
+        $userLng = $user->longitude;
+
+        $event = Event::findOrFail($id)
+            ->with([
+                'participants:event_participant_id,user_id,event_id',
+                'participants.user:user_id,login,first_name,last_name',
+                'participants.review:event_review_id,event_participant_id,content,rating,created_at'])->firstOrFail();
+//        $event = Event::findOrFail($id);
+        $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
+        $event['distance'] = sprintf("%0.3f", $distance);
+
+        if($request->has('wrap')) return new EventResource($event);
+        return $event;
+    }
+
 
     public function deleteEvent(Request $request)
     {
