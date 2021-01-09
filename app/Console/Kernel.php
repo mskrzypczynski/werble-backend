@@ -32,6 +32,12 @@ class Kernel extends ConsoleKernel
                ->where('datetime','<',now())
                ->update(['is_active' => false] );
         })->everyMinute();
+
+        $schedule->call(function ()
+        {
+            Event::where('datetime','<',now()->subDays(7))->delete();
+
+        })->everyMinute();
     }
 
     /**

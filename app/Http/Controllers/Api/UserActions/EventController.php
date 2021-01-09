@@ -170,7 +170,8 @@ class EventController extends Controller
         $userLat = $user->latitude;
         $userLng = $user->longitude;
 
-        $participatingEvents = $user->eventsParticipating();
+        $participatingEvents = $user->eventsParticipating();//->get();
+
         $participatingEvents = collect($participatingEvents)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
             $event['distance'] = sprintf("%0.3f", $distance);
