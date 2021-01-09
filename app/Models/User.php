@@ -169,8 +169,6 @@ class User extends Authenticatable
 
     // Return events the user is participating
     public function eventsParticipating(){
-
-
         return $this->participants()->get()->map(function ($participant){
             return $participant->event()->first();
         });

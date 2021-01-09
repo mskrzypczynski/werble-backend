@@ -25,17 +25,17 @@ class NoRelationshipSeeder extends Seeder
         User::factory(10)->create();
 
         $eventTypeNames =[
-            'Biking',
-            'Birthday',
-            'Board games',
-            'Concert',
-            'Festival',
-            'Gym',
-            'Party',
-            'Running',
-            'Swimming',
-            'Walk',
-        ];
+                'Gym',
+                'Running',
+                'Birthday',
+                'Party',
+                'Swimming',
+                'Concert',
+                'Festival',
+                'Biking',
+                'Board games',
+                'Walk',
+                ];
 
 
         foreach($eventTypeNames as $eventType){
