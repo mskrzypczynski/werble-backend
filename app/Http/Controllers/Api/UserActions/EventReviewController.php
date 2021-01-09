@@ -19,36 +19,36 @@ use Illuminate\Support\Facades\Auth;
 class EventReviewController extends Controller
 {
     public function createReview(Request $request){
-        $user = $request->user();
-        $userId = $user->user_id;
+            $user = $request->user();
+            $userId = $user->user_id;
 
-        $participant = EventParticipant::where('event_id',$request->event_id)
-            ->where('user_id',$userId)->firstOrFail();
-        $participantId = $participant->event_participant_id;
+            $participant = EventParticipant::where('event_id',$request->event_id)
+                ->where('user_id',$userId)->firstOrFail();
+            $participantId = $participant->event_participant_id;
 
-        $this->validate($request,
-            [
-                'event_id' => 'required',
-                'content' => 'required',
-                'rating' => 'required',
-            ]);
+            $this->validate($request,
+                [
+                    'event_id' => 'required',
+                    'content' => 'required',
+                    'rating' => 'required',
+                ]);
 
-        $review = EventReview::withTrashed()->where('event_participant_id',$participantId)->first();
-        if($review)
-        {
-            $review->restore();
-            $review->created_at = Carbon::now();
-        }
-        else
-            $review = new EventReview;
+            $review = EventReview::withTrashed()->where('event_participant_id',$participantId)->first();
+            if($review)
+            {
+                $review->restore();
+                $review->created_at = Carbon::now();
+            }
+            else
+                $review = new EventReview;
 
-        $review->event_participant_id = $participantId;
-        $review->content = $request['content'];
-        $review->rating = $request->rating;
-        $review->save();
+            $review->event_participant_id = $participantId;
+            $review->content = $request['content'];
+            $review->rating = $request->rating;
+            $review->save();
 
-        $response = ['message' => 'You have created review!'];
-        return response()->json($response, 200);
+            $response = ['message' => 'You have created review!'];
+            return response()->json($response, 200);
 
 
     }
