@@ -8,6 +8,7 @@ use App\Http\Resources\ProfileResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -44,7 +45,7 @@ class ProfileController extends Controller
                 'first_name' => 'nullable',
                 'last_name' => 'nullable',
                 'birth_date' => 'nullable',
-                'description' => 'nullable',
+                'description' => 'nullable'
         ];
         $toUpdate = [];
 
@@ -58,6 +59,15 @@ class ProfileController extends Controller
         foreach ($toUpdate as $key => $value) $user[$key] = $request[$key];
 
         $user->save();
+        return (new EventResource($user))->response()->setStatusCode(200);
+    }
+
+    public function updatePassword(Request $request){
+        $user = $request->user();
+        $this->validate($request,[
+            'password' => 'nullable']);
+        $user['password'] = Hash::make($request->password);
+        $user->update();
         return (new EventResource($user))->response()->setStatusCode(200);
     }
 
