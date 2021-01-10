@@ -168,7 +168,7 @@ class User extends Authenticatable
     }
 
     // Return events the user is participating
-    public function eventsParticipating($with_participants){
+    public function eventsParticipating($with_participants=false){
         if($with_participants)
             return $this->participants()
                 ->with(['participants:event_participant_id,user_id,event_id'])->get()
