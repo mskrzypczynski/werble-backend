@@ -29,13 +29,13 @@ class Kernel extends ConsoleKernel
         $schedule->call(function ()
         {
            DB::table('events')
-               ->where('datetime','<',now())
-               ->update(['is_active' => false] );
+               ->where('end_datetime','<',now())
+               ->update(['status' => 0] );
         })->everyMinute();
 
         $schedule->call(function ()
         {
-            Event::where('datetime','<',now()->subDays(7))->delete();
+            Event::where('end_datetime','<',now()->subDays(7))->delete();
 
         })->everyMinute();
     }

@@ -15,7 +15,7 @@ class ProfileController extends Controller
     public function updateUserPosition(Request $request){
         $user = $request->user();
         $this->validate($request,[
-            'latitude' => 'required',
+            'latitude'  => 'required',
             'longitude' => 'required'
         ]);
 
@@ -41,11 +41,14 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $toCheck = [
-                'email' => 'nullable',
-                'first_name' => 'nullable',
-                'last_name' => 'nullable',
-                'birth_date' => 'nullable',
-                'description' => 'nullable'
+                    'email'     => ['required',
+                                    'unique:users',
+                                    "regex:/^[a-zA-Z0-9.!#$%&\"*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                                    ],
+                    'first_name'    => 'nullable',
+                    'last_name'     => 'nullable',
+                    'birth_date'    => 'nullable|date|after:1900-01-01',
+                    'description'   => 'nullable|regex:/[a-zA-Z0-9 ]{0,280}'
         ];
         $toUpdate = [];
 
@@ -64,11 +67,20 @@ class ProfileController extends Controller
 
     public function updatePassword(Request $request){
         $user = $request->user();
+
         $this->validate($request,[
-            'password' => 'nullable']);
+            'password' => ['required',
+                'min:8',
+                'max:64',
+                'regex:/[a-zA-Z0-9]{8,64}/',
+//                'confirmed'
+            ]
+            ]);
+
         $user['password'] = Hash::make($request->password);
+
         $user->update();
-        return (new EventResource($user))->response()->setStatusCode(200);
+        return (new EventResource($user));
     }
 
     public function deactivateAuthenticatedUserProfile(Request $request){

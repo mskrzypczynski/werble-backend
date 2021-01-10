@@ -20,10 +20,7 @@ class EventParticipantController extends Controller
     public function joinEvent(Request $request, $eventId)
     {
         $user = $request->user();
-        $event = Event::where('event_id', $eventId)->first();
-
-        if (!$event)
-            return response()->json(['message' => 'Event not found'], 404);
+        $event = Event::where('event_id', $eventId)->firstOrFail();
 
         $participant = EventParticipant::withTrashed()
             ->where('user_id',$user->user_id)

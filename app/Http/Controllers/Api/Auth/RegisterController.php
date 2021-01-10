@@ -29,8 +29,11 @@ class RegisterController extends Controller
         $this->validate($request,
             [
                 'login'     => 'required|unique:users',
-                'email'     => 'required|unique:users',
-                'password'  => 'required|confirmed'
+                'email'     => ['required',
+                                'unique:users',
+                                "regex:/^[a-zA-Z0-9.!#$%&\"*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                                ],
+                'password'  =>  'required|confirmed|min:8|max:64|regex:/[a-zA-Z0-9]{8,64}/'
              ]
         );
 

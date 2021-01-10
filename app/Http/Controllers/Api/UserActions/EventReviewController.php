@@ -28,9 +28,9 @@ class EventReviewController extends Controller
 
         $this->validate($request,
             [
-                'event_id' => 'required',
-                'content' => 'required',
-                'rating' => 'required',
+                'event_id'  => 'required',
+                'content'   => 'required|min:1|max:280',
+                'rating'    => 'required|digits_between:1,5',
             ]);
 
         $review = EventReview::withTrashed()->where('event_participant_id',$participantId)->first();
@@ -76,8 +76,8 @@ class EventReviewController extends Controller
 
         // model attrs to change sent in request, check if they exist
         $toCheck = [
-            'rating' => 'required',
-            'content' => 'required',
+            'content'   => 'required|min:1|max:280',
+            'rating'    => 'required|digits_between:1,5',
         ];
         $toUpdate = [];
 

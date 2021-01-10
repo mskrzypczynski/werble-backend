@@ -43,27 +43,26 @@ class EventController extends Controller
         $user = $request->user();
 
         $toCheck = [
-            'name' => 'required',
-            'location' => 'required',
-            'description' => 'nullable',
-            'datetime' => 'required',
-            'longitude' => 'nullable',
-            'latitude' => 'nullable',
-            'event_type_id' => 'required',
-            'zip_code' => 'nullable',
-            'street_name' => 'nullable',
-            'house_number' => 'nullable'
+            'name'              => 'required|min:3|max:50|regex:/[a-zA-Z0-9]{3,50}/',
+            'description'       => 'nullable|max:200',
+            'start_datetime'    => 'required|date|after:now',
+            'end_datetime'      => 'required|date|after:start_datetime',
+            'status'            => 'required|digits_between:0,2',
+            'longitude'         => 'required',
+            'latitude'          => 'required',
+            'event_type_id'     => 'required',
+            'location'          => 'nullable|max:100|regex:/[a-zA-Z0-9]{0,100}/',
+            'zip_code'          => 'nullable|size:6|regex:/[0-9]{2}-[0-9]{3}/',
+            'street_name'       => 'nullable|max:50|regex:/[a-zA-Z0-9]{0,50}/',
+            'house_number'      => 'nullable|max:10|regex:/[a-zA-Z0-9]{0,50}/'
         ];
 
-        $toUpdate = [];
-
-        foreach ($toCheck as $key => $value) if ($request["$key"]) $toUpdate[$key] = $value;
         // validate sent data
-        $this->validate($request, $toUpdate);
+        $this->validate($request, $toCheck);
 
         // update only sent attr
         $event = new Event;
-        foreach ($toUpdate as $key => $value) $event[$key] = $request[$key];
+        foreach ($toCheck as $key => $value) $event[$key] = $request[$key];
 
         $event->event_creator_id = $user->user_id;
         $event->save();
@@ -90,19 +89,21 @@ class EventController extends Controller
 
         // model attrs to change sent in request, check if they exist
         $toCheck = [
-            'name' => 'required',
-            'location' => 'required',
-            'description' => 'nullable',
-            'datetime' => 'nullable',
-            'event_type_id' => 'required',
-            'longitude' => 'nullable',
-            'latitude' => 'nullable',
-            'zip_code' => 'nullable',
-            'street_name' => 'nullable',
-            'house_number' => 'nullable'
+            'name'              => 'required|min:3|max:50|regex:/[a-zA-Z0-9]{3,50}/',
+            'description'       => 'nullable|max:200',
+            'start_datetime'    => 'required|date|after:now',
+            'end_datetime'      => 'required|date|after:start_datetime',
+            'status'            => 'required|digits_between:0,2',
+            'longitude'         => 'required',
+            'latitude'          => 'required',
+            'event_type_id'     => 'required',
+            'location'          => 'nullable|max:100|regex:/[a-zA-Z0-9]{0,100}/',
+            'zip_code'          => 'nullable|size:6|regex:/[0-9]{2}-[0-9]{3}/',
+            'street_name'       => 'nullable|max:50|regex:/[a-zA-Z0-9]{0,50}/',
+            'house_number'      => 'nullable|max:10|regex:/[a-zA-Z0-9]{0,50}/'
         ];
-        $toUpdate = [];
 
+        $toUpdate = [];
 
         foreach ($toCheck as $key => $value) if ($request->has($key)) $toUpdate[$key] = $value;
 

@@ -23,17 +23,21 @@ class EventFactory extends Factory
      */
     public function definition()
     {
+        $now = $this->faker->dateTime('now');
+        $end = $this->faker->dateTimeBetween('now','+1 days');
+
         return [
-            'name'                    =>  $this->faker->text(30),
-            'location'                =>  $this->faker->city,
+            'name'                          =>  $this->faker->text(30),
+            'location'                      =>  $this->faker->city,
             'zip_code'                      =>  $this->faker->postcode,
             'street_name'                   =>  $this->faker->streetName,
             'house_number'                  =>  $this->faker->randomNumber(5),
             'longitude'                     =>  $this->faker->longitude,
             'latitude'                      =>  $this->faker->latitude,
             'description'                   =>  $this->faker->text(),
-            'datetime'                      =>  $this->faker->dateTime(),
-            'is_active'                     =>  $this->faker->boolean(80),
+            'start_datetime'                =>  $now,
+            'end_datetime'                  =>  $end,
+            'status'                        =>  $this->faker->boolean(80),
             'event_creator_id'              =>  User::all()->random()->user_id,
             'event_type_id'                 =>  EventType::all()->random()->event_type_id,
         ];

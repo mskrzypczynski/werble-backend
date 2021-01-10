@@ -23,8 +23,10 @@ class CreateEventsTable extends Migration
             $table->decimal     ('longitude',10,7)->nullable();
             $table->decimal     ('latitude',10,7)->nullable();
             $table->string      ('description')->nullable();
-            $table->dateTime    ('datetime');
-            $table->boolean     ('is_active');
+            $table->dateTime    ('start_datetime');
+            $table->dateTime    ('end_datetime');
+            $table->integer     ('status');  //0,1,2
+
             $table->bigInteger  ('event_creator_id')->unsigned();
             $table->bigInteger  ('event_type_id')->unsigned();
             $table->softDeletes();
