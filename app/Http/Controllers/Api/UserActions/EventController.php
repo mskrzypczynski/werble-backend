@@ -137,8 +137,7 @@ class EventController extends Controller
         $userLat = $user->latitude;
         $userLng = $user->longitude;
 
-        $event = Event::findOrFail($id)
-            ->with([
+        $event = Event::where('event_id',$id)->with([
                 'participants:event_participant_id,user_id,event_id',
                 'participants.user:user_id,login,first_name,last_name',
                 'participants.review:event_review_id,event_participant_id,content,rating,created_at'])->firstOrFail();
