@@ -89,6 +89,7 @@ class Event extends Model
      */
     protected $attributes = [
         'event_type_id' => 1,
+        'status' => 2
     ];
 
     protected $fillable = [
