@@ -169,7 +169,10 @@ class EventController extends Controller
         $userLat = $user->latitude;
         $userLng = $user->longitude;
 
-        $participatingEvents = $user->eventsParticipating();//->get();
+        if($request->has('with_participants'))
+            $participatingEvents = $user->eventsParticipating('with_participants');//->get();
+        else
+            $participatingEvents = $user->eventsParticipating();
 
         $participatingEvents = collect($participatingEvents)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
@@ -186,7 +189,12 @@ class EventController extends Controller
         $userLat = $user->latitude;
         $userLng = $user->longitude;
 
-        $ownedEvents = $user->events()->get();
+        if($request->has('with_participants'))
+            $ownedEvents = $user->events()->with([
+                'participants:event_participant_id,user_id,event_id'])->get();
+        else
+            $ownedEvents = $user->events()->get();
+
         $ownedEvents = collect($ownedEvents)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
             $event['distance'] = sprintf("%0.3f", $distance);
@@ -206,7 +214,13 @@ class EventController extends Controller
         $userLng = $user->longitude;
         $distance = $request->has('distance') ? $request->distance : $defaultDistance;
 
-        $events = Event::all();
+        if($request->has('with_participants'))
+            $events = Event::with([
+                'participants:event_participant_id,user_id,event_id'])->get();
+        else
+            $events = Event::all();
+
+
         $events = collect($events)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
             $event['distance'] = sprintf("%0.3f", $distance);

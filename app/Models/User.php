@@ -168,10 +168,17 @@ class User extends Authenticatable
     }
 
     // Return events the user is participating
-    public function eventsParticipating(){
-        return $this->participants()->get()->map(function ($participant){
-            return $participant->event()->first();
-        });
+    public function eventsParticipating($with_participants){
+        if($with_participants)
+            return $this->participants()
+                ->with(['participants:event_participant_id,user_id,event_id'])->get()
+                ->map(function ($participant){
+                    return $participant->event()->first();
+            });
+        else
+            return $this->participants()->get()->map(function ($participant){
+                return $participant->event()->first();
+            });
     }
 
     //checks if user's is_admin is set
