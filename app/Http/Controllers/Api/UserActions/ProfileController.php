@@ -48,7 +48,7 @@ class ProfileController extends Controller
                     'first_name'    => 'nullable',
                     'last_name'     => 'nullable',
                     'birth_date'    => 'nullable|date|after:1900-01-01',
-                    'description'   => 'nullable|regex:/^[a-zA-Z0-9 ]{0,280}$/'
+                    'description'   => 'nullable'
         ];
         $toUpdate = [];
 
@@ -71,8 +71,7 @@ class ProfileController extends Controller
         $this->validate($request,[
             'password' => ['required',
                 'min:8',
-                'max:64',
-                'regex:/^[a-zA-Z0-9]{8,64}$/',
+                'max:64'
 //                'confirmed'
             ]
             ]);
