@@ -76,7 +76,7 @@ class User extends Authenticatable
      *  Also while deleting we switch entity's is_active attribute to false.
      *  User must verify email
      */
-    use HasFactory, Notifiable, HasApiTokens, SoftDeletes,CascadeSoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, CascadeSoftDeletes;
 
     /**
      * The table associated with User model
@@ -152,33 +152,37 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected  $cascadeDeletes = ['events','participants'];
+    protected $cascadeDeletes = ['events', 'participants'];
 
 
     /* One-to-Many Relationships */
 
-    //return events created by the user
-    public function events(){
-        return $this->hasMany('App\Models\Event','event_creator_id','user_id');
+    //return events Owned by the user
+    public function events()
+    {
+        return $this->hasMany('App\Models\Event', 'event_creator_id', 'user_id');
     }
 
     // returns event_participants models
-    public function participants(){
-        return $this->hasMany('App\Models\EventParticipant','user_id','user_id');
+    public function participants()
+    {
+        return $this->hasMany('App\Models\EventParticipant', 'user_id', 'user_id');
     }
 
     // Return events the user is participating
-    public function eventsParticipating($with_participants=false){
-        if($with_participants)
-            return $this->participants()
-                ->with(['participants:event_participant_id,user_id,event_id'])->get()
-                ->map(function ($participant){
-                    return $participant->event()->first();
+    public function eventsParticipating($with_participants = false)
+    {
+        $participants = $this->participants()->get();
+        if ($with_participants)
+
+            $events = collect($participants)->map(function ($p) {
+                return $p->event()->with(['participants:event_participant_id,user_id,event_id'])->first();
             });
         else
-            return $this->participants()->get()->map(function ($participant){
-                return $participant->event()->first();
+            $events = collect($participants)->map(function ($p) {
+                return $p->event()->first();
             });
+        return $events;
     }
 
     //checks if user's is_admin is set
