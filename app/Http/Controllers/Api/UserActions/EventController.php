@@ -47,7 +47,6 @@ class EventController extends Controller
             'description'       => 'nullable|max:200',
             'start_datetime'    => 'required',
             'end_datetime'      => 'required',
-            'status'            => 'required|digits_between:0,2',
             'longitude'         => 'required',
             'latitude'          => 'required',
             'event_type_id'     => 'required',
@@ -65,8 +64,10 @@ class EventController extends Controller
         foreach ($toCheck as $key => $value) $event[$key] = $request[$key];
 
         $event->event_creator_id = $user->user_id;
+        $event['status'] = 2;
         $event->save();
         $event->refresh();
+
 
         $eventParticipant = new EventParticipant;
         $eventParticipant->user_id = $user->user_id;
