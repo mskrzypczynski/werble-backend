@@ -31,7 +31,7 @@ class EventTypeController extends Controller
     {
         $request->validate(
             [
-                'event_type_name' => 'required|regex:/[A-Za-z]{20}',
+                'event_type_name' => 'required|regex:/^[A-Za-z]{20}$/',
             ]
         );
         $eventType = EventType::create($request->all());

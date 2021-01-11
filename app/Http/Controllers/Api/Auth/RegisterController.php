@@ -33,7 +33,7 @@ class RegisterController extends Controller
                                 'unique:users',
                                 'email'
                                 ],
-                'password'  =>  'required|confirmed|min:8|max:64|regex:/[a-zA-Z0-9]{8,64}/'
+                'password'  =>  'required|confirmed|min:8|max:64|regex:/^[a-zA-Z0-9]{8,64}$/'
              ]
         );
 

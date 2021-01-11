@@ -43,7 +43,7 @@ class EventController extends Controller
         $user = $request->user();
 
         $toCheck = [
-            'name'              => 'required|min:3|max:50|regex:/[a-zA-Z0-9 ]{3,50}/',
+            'name'              => 'required|min:3|max:50|regex:/^[a-zA-Z0-9 ]{3,50}$/',
             'description'       => 'nullable|max:200',
             'start_datetime'    => 'required|date|after:now',
             'end_datetime'      => 'required|date|after:start_datetime',
@@ -51,10 +51,10 @@ class EventController extends Controller
             'longitude'         => 'required',
             'latitude'          => 'required',
             'event_type_id'     => 'required',
-            'location'          => 'nullable|max:100|regex:/[a-zA-Z0-9 ]{0,100}/',
-            'zip_code'          => 'nullable|size:6|regex:/[0-9]{2}-[0-9]{3}/',
-            'street_name'       => 'nullable|max:50|regex:/[a-zA-Z0-9 ]{0,50}/',
-            'house_number'      => 'nullable|max:10|regex:/[a-zA-Z0-9 ]{0,50}/'
+            'location'          => 'nullable|max:100|regex:/^[a-zA-Z0-9 ]{0,100}$/',
+            'zip_code'          => 'nullable|size:6|regex:/^[0-9]{2}-[0-9]{3}$/',
+            'street_name'       => 'nullable|max:50|regex:/^[a-zA-Z0-9 ]{0,50}$/',
+            'house_number'      => 'nullable|max:10|regex:/^[a-zA-Z0-9 ]{0,50}$/'
         ];
 
         // validate sent data
@@ -89,7 +89,7 @@ class EventController extends Controller
 
         // model attrs to change sent in request, check if they exist
         $toCheck = [
-            'name'              => 'required|min:3|max:50|regex:/[a-zA-Z0-9 ]{3,50}/',
+            'name'              => 'required|min:3|max:50|regex:/^[a-zA-Z0-9 ]{3,50}$/',
             'description'       => 'nullable|max:200',
             'start_datetime'    => 'required|date|after:now',
             'end_datetime'      => 'required|date|after:start_datetime',
@@ -97,10 +97,10 @@ class EventController extends Controller
             'longitude'         => 'required',
             'latitude'          => 'required',
             'event_type_id'     => 'required',
-            'location'          => 'nullable|max:100|regex:/[a-zA-Z0-9 ]{0,100}/',
-            'zip_code'          => 'nullable|size:6|regex:/[0-9]{2}-[0-9]{3}/',
-            'street_name'       => 'nullable|max:50|regex:/[a-zA-Z0-9 ]{0,50}/',
-            'house_number'      => 'nullable|max:10|regex:/[a-zA-Z0-9 ]{0,50}/'
+            'location'          => 'nullable|max:100|regex:/^[a-zA-Z0-9 ]{0,100}$/',
+            'zip_code'          => 'nullable|size:6|regex:/^[0-9]{2}-[0-9]{3}$/',
+            'street_name'       => 'nullable|max:50|regex:/^[a-zA-Z0-9 ]{0,50}$/',
+            'house_number'      => 'nullable|max:10|regex:/^[a-zA-Z0-9 ]{0,50}$/'
         ];
 
         $toUpdate = [];
