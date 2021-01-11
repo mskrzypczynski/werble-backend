@@ -79,19 +79,21 @@ class ProfileController extends Controller
         $user['password'] = Hash::make($request->password);
 
         $user->update();
-        return (new EventResource($user));
+//        return (new EventResource($user));
+        return response()->json(['message' => 'Password changed'],200);
     }
 
     public function updateEmail(Request $request){
         $user = $request->user();
 
         $this->validate($request,[
-            'email' => 'required'
+            'email' => 'required|unique:users'
         ]);
 
         $user->email = $request->email;
         $user->update();
-        return (new EventResource($user));
+//        return (new EventResource($user));
+        return response()->json(['message' => 'Email changed'],200);
     }
 
     public function deactivateAuthenticatedUserProfile(Request $request){
