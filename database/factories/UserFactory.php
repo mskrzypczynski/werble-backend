@@ -35,7 +35,6 @@ class UserFactory extends Factory
             'latitude'                  =>  $this->faker->latitude,
             'is_admin'                  =>  false,
             'is_active'                 =>  $this->faker->boolean(90),
-            'remember_token'            =>  Str::random(10),
         ];
     }
 }
