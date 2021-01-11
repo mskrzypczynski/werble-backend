@@ -52,6 +52,7 @@ Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function (
         Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
         Route::delete('profile/deactivate',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'deactivateAuthenticatedUserProfile']);
         Route::put('profile/editpassword',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'updatePassword']);
+        Route::put('profile/editemail',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'updateEmail']);
 
         Route::get('events', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getAllEvents']);
         Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);

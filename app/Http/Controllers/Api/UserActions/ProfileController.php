@@ -82,6 +82,18 @@ class ProfileController extends Controller
         return (new EventResource($user));
     }
 
+    public function updateEmail(Request $request){
+        $user = $request->user();
+
+        $this->validate($request,[
+            'email' => 'required'
+        ]);
+
+        $user->email = $request->email;
+        $user->update();
+        return (new EventResource($user));
+    }
+
     public function deactivateAuthenticatedUserProfile(Request $request){
         $user = $request->user();
         $user->delete();
