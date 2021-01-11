@@ -45,8 +45,8 @@ class EventController extends Controller
         $toCheck = [
             'name'              => 'required|min:3|max:50',
             'description'       => 'nullable|max:200',
-            'start_datetime'    => 'required|date',
-            'end_datetime'      => 'required|date',
+            'start_datetime'    => 'required',
+            'end_datetime'      => 'required',
             'status'            => 'required|digits_between:0,2',
             'longitude'         => 'required',
             'latitude'          => 'required',
