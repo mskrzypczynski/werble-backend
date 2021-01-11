@@ -43,7 +43,7 @@ class ProfileController extends Controller
         $toCheck = [
                     'email'     => ['required',
                                     'unique:users',
-                                    "regex:/^[a-zA-Z0-9.!#$%&\"*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/"
+                                    'email'
                                     ],
                     'first_name'    => 'nullable',
                     'last_name'     => 'nullable',
