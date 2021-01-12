@@ -83,7 +83,9 @@ class EventController extends Controller
     public function editEvent(Request $request, $eventId)
     {
         $user = $request->user();
-        $event = Event::where('event_id', $eventId)->firstOrFail();
+        $event = Event::where('event_id', $eventId)
+            ->where('event_creator_id',$user->user_id)
+            ->firstOrFail();
 
         if (!$user->user_id === $event->event_creator_id)
             return response()->json(403, 'You dont have right to do this');
