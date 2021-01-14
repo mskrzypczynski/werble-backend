@@ -3,6 +3,10 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\UserActions\EventController;
+use App\Http\Controllers\Api\UserActions\EventParticipantController;
+use App\Http\Controllers\Api\UserActions\EventReviewController;
+use App\Http\Controllers\Api\UserActions\EventTypeController;
+use App\Http\Controllers\Api\UserActions\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -17,14 +21,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Route::apiResource('events','Api\EventController');
 
-Route::get('test', function () {
-    $event = \App\Models\Event::findOrFail(1);
-    return $event['name'];
-});
-
-//Route::apiResource('users', 'Api\UserController');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -37,67 +34,45 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
 
 // Private routes
 Route::group(['middleware' => ['cors', 'json.response', 'auth:api']], function () {
+
     //logout
     Route::post('logout', [LoginController::class, 'logout'])->name('logout.api');
     Route::post('logout_all', [LoginController::class, 'logoutAll'])->name('logoutAll.api');
     Route::post('refresh', [LoginController::class, 'refresh'])->name('refresh.api');
 
-    Route::get('is_admin', function () {
-        return Auth::guard('api')->user()->isAdmin();
-    });
-
 
     Route::group(['prefix' => 'user'], function () {
-        Route::get('profile', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'getAuthenticatedUserProfile']);
-        Route::put('profile/edit',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'editAuthenticatedUserProfile']);
-        Route::delete('profile/deactivate',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'deactivateAuthenticatedUserProfile']);
-        Route::put('profile/editpassword',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'updatePassword']);
-        Route::put('profile/editemail',[\App\Http\Controllers\Api\UserActions\ProfileController::class,'updateEmail']);
+        // user profile routes
+        Route::get('profile', [ProfileController::class, 'getAuthenticatedUserProfile']);
+        Route::put('profile', [ProfileController::class, 'editAuthenticatedUserProfile']);
+        Route::delete('profile', [ProfileController::class, 'deactivateAuthenticatedUserProfile']);
+        Route::put('profile/editpassword', [ProfileController::class, 'updatePassword']);
+        Route::put('profile/editemail', [ProfileController::class, 'updateEmail']);
+        Route::put('profile/position', [ProfileController::class, 'updateUserPosition']);
 
-        Route::get('events', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getAllEvents']);
-        Route::post('events/create', [\App\Http\Controllers\Api\UserActions\EventController::class, 'createEvent']);
-        Route::get('events/owned', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getOwnedEvents']);
-        Route::get('events/local', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getLocalEvents']);
-        Route::get('events/participating', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getParticipatingEvents']);
-        Route::post('events/review/create', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'createReview']);
-        Route::delete('events/review/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'softDeleteReview']);
+        // events and participants routes
+        Route::get('events', [EventController::class, 'getAllEvents']);
+        Route::post('events', [EventController::class, 'createEvent']);
+        Route::get('events/owned', [EventController::class, 'getOwnedEvents']);
+        Route::get('events/local', [EventController::class, 'getLocalEvents']);
+        Route::get('events/participating', [EventController::class, 'getParticipatingEvents']);
+        Route::get('events/{id}', [EventController::class, 'getSingleEvent']);
+        Route::get('events/{id}/wrapped', [EventController::class, 'getEventWithParticipantsWithUserAndReview']);
 
-        Route::get('events/{id}', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getSingleEvent']);
-        Route::get('events/{id}/wrapped', [\App\Http\Controllers\Api\UserActions\EventController::class, 'getEventWithParticipantsWithUserAndReview']);
+        Route::put('events/{id}', [EventController::class, 'editEvent']);
+        Route::delete('events/{id}', [EventController::class, 'softDeleteEvent']);
+        Route::get('events/{id}/participants', [EventParticipantController::class, 'getEventParticipantsProfiles']);
+        Route::post('events/{id}/join', [EventParticipantController::class, 'joinEvent']);
+        Route::delete('events/{id}/leave', [EventParticipantController::class, 'leaveEvent']);
+        Route::get('participants', [EventParticipantController::class, 'getUserParticipatingEvents']);
 
-        Route::put('events/{id}/edit', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEvent']);
-        Route::delete('events/{id}/softdelete', [\App\Http\Controllers\Api\UserActions\EventController::class, 'softDeleteEvent']);
-        Route::get('events/{id}/participants', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'getEventParticipantsProfiles']);
-        Route::post('events/{id}/join', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'joinEvent']);
-        Route::delete('events/{id}/leave', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'leaveEvent']);
+        // event reviews routes
+        Route::get('events/{id}/reviews', [EventReviewController::class, 'getEventReviews']);
+        Route::get('events/{id}/review', [EventReviewController::class, 'getSingleReview']);
+        Route::put('events/{id}/review', [EventReviewController::class, 'editReview']);
+        Route::post('reviews', [EventReviewController::class, 'createReview']);
+        Route::delete('reviews/{id}', [EventReviewController::class, 'softDeleteReview']);
 
-
-        Route::get('events/{id}/reviews', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getEventReviews']);
-        Route::get('events/{id}/review', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'getSingleReview']);
-        Route::put('events/{id}/review/edit', [\App\Http\Controllers\Api\UserActions\EventReviewController::class, 'editReview']);
-
-
-        Route::get('participant', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'getUserParticipatingEvents']);
-        Route::post('participant/change', [\App\Http\Controllers\Api\UserActions\EventParticipantController::class, 'changeParticipantStatus']);
-
-        //Route::put('events/{id}/edit/marker', [\App\Http\Controllers\Api\UserActions\EventController::class, 'editEventMarker']);
-        Route::get('types',[\App\Http\Controllers\Api\UserActions\EventTypeController::class,'index']);
-        Route::put('position', [\App\Http\Controllers\Api\UserActions\ProfileController::class, 'updateUserPosition']);
-        //Route::get('events/{id}');
-        //Route::get('friends',[\App\Http\Controllers\Api\UserFriendController::class,'userFriends']);
-    });
-
-    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
-
-        //admin api resources, most important
-        //Route::apiResource('users','Api\UserController');
-        //Route::apiResource('events', 'Api\EventController');
-        //Route::apiResource('reviews','Api\EventReviews');
-        //Route::apiResource('participants','Api\ParticipantController');
-        Route::get('users/{id}', function ($id) {
-
-        });
-        // types and statuses
-
+        Route::get('types', [EventTypeController::class, 'index']);
     });
 });
