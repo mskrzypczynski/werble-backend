@@ -33,8 +33,6 @@ class UserFactory extends Factory
             'description'               =>  $this->faker->text(),
             'longitude'                 =>  $this->faker->longitude,
             'latitude'                  =>  $this->faker->latitude,
-            'is_admin'                  =>  false,
-            'is_active'                 =>  $this->faker->boolean(90),
         ];
     }
 }

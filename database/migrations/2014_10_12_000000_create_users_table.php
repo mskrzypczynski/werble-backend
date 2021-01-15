@@ -25,11 +25,7 @@ class CreateUsersTable extends Migration
             $table->string  ('description')->nullable();
             $table->decimal ('longitude',10,7)->nullable();
             $table->decimal  ('latitude',10,7)->nullable();
-            $table->boolean ('is_admin');
-            $table->boolean ('is_active');
-
             $table->softDeletes();
-
             $table->rememberToken();
             $table->timestamps();
         });

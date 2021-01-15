@@ -130,6 +130,7 @@ class EventController extends Controller
         //
         $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
         $event['distance'] = sprintf("%0.3f", $distance);
+        $event['owner_login'] = $event->creator()->first()->login;
 
         if($request->has('wrap')) return new EventResource($event);
         return $event;
@@ -148,6 +149,7 @@ class EventController extends Controller
 //        $event = Event::findOrFail($id);
         $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
         $event['distance'] = sprintf("%0.3f", $distance);
+        $event['owner_login'] = $event->creator()->first()->login;
 
         if($request->has('wrap')) return new EventResource($event);
         return $event;
@@ -181,6 +183,7 @@ class EventController extends Controller
         $participatingEvents = collect($participatingEvents)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
             $event['distance'] = sprintf("%0.3f", $distance);
+            $event['owner_login'] = $event->creator()->first()->login;
             return $event;
         });
 
@@ -202,6 +205,7 @@ class EventController extends Controller
         $ownedEvents = collect($ownedEvents)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
             $event['distance'] = sprintf("%0.3f", $distance);
+            $event['owner_login'] = $event->creator()->first()->login;
             return $event;
         });
 
@@ -228,6 +232,7 @@ class EventController extends Controller
         $events = collect($events)->map(function ($event) use ($userLat, $userLng) {
             $distance = $this->calculateDistanceBetweenTwoAddresses($event->latitude, $event->longitude, $userLat, $userLng);
             $event['distance'] = sprintf("%0.3f", $distance);
+            $event['owner_login'] = $event->creator()->first()->login;
             return $event;
         });
 

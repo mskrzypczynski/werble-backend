@@ -131,7 +131,7 @@ class Event extends Model
 
     /* One-to-One Relationships */
     public function creator(){
-        return $this->belongsTo('App\Models\User','user_id','event_creator_id');
+        return $this->belongsTo('App\Models\User','event_creator_id','user_id');
     }
 
 

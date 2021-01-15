@@ -25,16 +25,7 @@ class EventReviewFactory extends Factory
         return [
             'content'               =>  $this->faker->text(),
             'rating'                =>  $this->faker->numberBetween(1,5),
-            'is_active'             =>  $this->faker->boolean(90),
             'event_participant_id'  =>  $this->faker->numberBetween(1,10),
         ];
     }
 }
-/*
-    $table->string('review_content');
-    $table->integer('event_rating');
-    $table->dateTime('review_datetime');
-    $table->boolean('review_is_active');
-    $table->bigInteger('event_participant_id')->unsigned();
-    $table->bigInteger('event_id')->unsigned()
-*/
