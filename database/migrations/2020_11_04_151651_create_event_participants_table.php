@@ -27,7 +27,6 @@ class CreateEventParticipantsTable extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
-
     /**
      * Reverse the migrations.
      *

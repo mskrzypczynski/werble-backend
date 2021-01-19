@@ -23,20 +23,15 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')->hourly();
-        $schedule->call(function ()
-        {
+    protected function schedule(Schedule $schedule){
+        $schedule->call(function () {
            DB::table('events')
                ->where('end_datetime','<',now())
                ->update(['status' => 0] );
         })->everyMinute();
 
-        $schedule->call(function ()
-        {
+        $schedule->call(function () {
             Event::where('end_datetime','<',now()->subDays(7))->delete();
-
         })->everyMinute();
     }
 

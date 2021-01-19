@@ -48,32 +48,25 @@ class EventParticipant extends Model
      * @var string
      */
     protected $table = 'event_participants';
-
     /**
      * The primary key associated with the table
      * @var string
      */
     protected $primaryKey = 'event_participant_id';
-
     /**
      * Indicates if the IDs are auto-incrementing.     *
      * @var bool
      */
     public $incrementing = true;
-
     protected  $cascadeDeletes = ['review'];//,'event','user'];
 
     /* One-to-One Relationships */
-    public function review()
-    {
+    public function review(){
         return $this->hasOne('App\Models\EventReview', 'event_participant_id', 'event_participant_id');
     }
-
-    public function event()
-    {
+    public function event(){
         return $this->belongsTo('App\Models\Event', 'event_id', 'event_id');
     }
-
     public function user(){
         return $this->belongsTo('App\Models\User','user_id','user_id');
     }
